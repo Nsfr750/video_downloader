@@ -171,12 +171,17 @@ def main() -> None:
     )
     args = parser.parse_args()
 
-    # Default to GUI mode unless --cli is specified
-    use_gui = not args.cli
+    # Determine mode: --gui for GUI, --cli for CLI, default to GUI
+    if args.gui:
+        use_gui = True
+    elif args.cli:
+        use_gui = False
+    else:
+        use_gui = True  # Default to GUI mode
 
     if use_gui:
         try:
-            from ui import run_gui
+            from ui.main_window import run_gui
             run_gui()
         except ImportError:
             print("PySide6 not installed. Falling back to CLI mode.")
