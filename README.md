@@ -43,10 +43,17 @@ python main.py --cli
 - Language system in `lang/` folder
 - Logging system in `logger.py`
 - Menu system in `menu.py`
+- GUI system in `ui/` folder
+
+## Security
+
+For security reports, please contact: info@tuxxle.org
+
+See [SECURITY.md](SECURITY.md) for more information.
 
 ## License
 
-GPLv3
+This project is licensed under the GNU General Public License v3.0. See the [LICENSE](LICENSE) file for details.
 
 ## Copyright
 © Copyright 2024-2026 Nsfr750 - All rights reserved.
