@@ -181,3 +181,5 @@ cython_debug/
 .cursorindexingignore
 COMPILA
 assets/version_info.txt
+build.conf
+build_exe.sh
