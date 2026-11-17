@@ -3,4 +3,4 @@
 This module follows Semantic Versioning 2.0.0 (MAJOR.MINOR.PATCH).
 """
 
-__version__ = "1.0.0"
+__version__ = "1.1.0"

@@ -10,10 +10,10 @@ from PySide6.QtWidgets import (
     QApplication, QMainWindow, QWidget, QVBoxLayout, QHBoxLayout,
     QPushButton, QLineEdit, QTextEdit, QLabel, QProgressBar,
     QListWidget, QFileDialog, QComboBox, QTabWidget, QMessageBox,
-    QGroupBox, QSplitter
+    QGroupBox, QSplitter, QDialog
 )
 from PySide6.QtCore import Qt, QThread, Signal
-from PySide6.QtGui import QTextCursor
+from PySide6.QtGui import QTextCursor, QPixmap
 from logger import get_logger
 from lang import get_language_manager, _
 from version import __version__
@@ -454,8 +454,53 @@ class MainWindow(QMainWindow):
         self.close_button_settings.setText(_('close'))
 
     def _show_sponsor(self) -> None:
-        """Show sponsor information dialog."""
-        QMessageBox.information(self, _('sponsor_title'), _('sponsor_content'))
+        """Show sponsor information dialog with QR code."""
+        from sponsor import generate_monero_qrcode
+
+        dialog = QDialog(self)
+        dialog.setWindowTitle(_('sponsor_title'))
+        dialog.setMinimumSize(600, 500)
+
+        layout = QVBoxLayout()
+
+        # PayPal section
+        paypal_label = QLabel("PayPal:")
+        paypal_label.setStyleSheet("font-weight: bold;")
+        layout.addWidget(paypal_label)
+
+        paypal_link = QLabel('<a href="https://paypal.me/3dmega">https://paypal.me/3dmega</a>')
+        paypal_link.setOpenExternalLinks(True)
+        layout.addWidget(paypal_link)
+
+        layout.addSpacing(20)
+
+        # Monero section
+        monero_label = QLabel("Monero (XMR):")
+        monero_label.setStyleSheet("font-weight: bold;")
+        layout.addWidget(monero_label)
+
+        # Generate and display QR code
+        try:
+            qr_path = generate_monero_qrcode()
+            qr_pixmap = QPixmap(qr_path)
+            if not qr_pixmap.isNull():
+                qr_label = QLabel()
+                qr_label.setPixmap(qr_pixmap.scaled(300, 300, Qt.KeepAspectRatio, Qt.SmoothTransformation))
+                qr_label.setAlignment(Qt.AlignCenter)
+                layout.addWidget(qr_label)
+            else:
+                layout.addWidget(QLabel("Could not load QR code"))
+        except Exception as e:
+            layout.addWidget(QLabel(f"Error generating QR code: {e}"))
+
+        # Close button
+        close_button = QPushButton(_('close'))
+        close_button.setStyleSheet("background-color: #ff4444; color: white;")
+        close_button.clicked.connect(dialog.accept)
+        layout.addWidget(close_button)
+
+        dialog.setLayout(layout)
+        dialog.exec()
 
     def _check_updates(self) -> None:
         """Check for application updates."""

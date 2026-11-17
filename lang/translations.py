@@ -73,8 +73,7 @@ Support the development of Video Downloader
 
 PayPal: https://paypal.me/3dmega
 
-Monero:
-47Jc6MC47WJVFhiQFYwHyBNQP5BEsjUPG6tc8R37FwcTY8K5Y3LvFzveSXoGiaDQSxDrnCUBJ5WBj6Fgmsfix8VPD4w3gXF
+Monero: See QR code in the sponsor dialog
 
 Thank you for your support!
         ''',
@@ -196,8 +195,7 @@ Supporta lo sviluppo di Video Downloader
 
 PayPal: https://paypal.me/3dmega
 
-Monero:
-47Jc6MC47WJVFhiQFYwHyBNQP5BEsjUPG6tc8R37FwcTY8K5Y3LvFzveSXoGiaDQSxDrnCUBJ5WBj6Fgmsfix8VPD4w3gXF
+Monero: Vedi il codice QR nella finestra sponsor
 
 Grazie per il tuo supporto!
         ''',
@@ -319,8 +317,7 @@ Apoya el desarrollo de Video Downloader
 
 PayPal: https://paypal.me/3dmega
 
-Monero:
-47Jc6MC47WJVFhiQFYwHyBNQP5BEsjUPG6tc8R37FwcTY8K5Y3LvFzveSXoGiaDQSxDrnCUBJ5WBj6Fgmsfix8VPD4w3gXF
+Monero: Ver el código QR en el diálogo de patrocinador
 
 ¡Gracias por tu apoyo!
         ''',
@@ -442,8 +439,7 @@ Soutenez le développement de Video Downloader
 
 PayPal: https://paypal.me/3dmega
 
-Monero:
-47Jc6MC47WJVFhiQFYwHyBNQP5BEsjUPG6tc8R37FwcTY8K5Y3LvFzveSXoGiaDQSxDrnCUBJ5WBj6Fgmsfix8VPD4w3gXF
+Monero: Voir le code QR dans la boîte de dialogue sponsor
 
 Merci pour votre soutien!
         ''',
@@ -565,8 +561,7 @@ Unterstützen Sie die Entwicklung von Video Downloader
 
 PayPal: https://paypal.me/3dmega
 
-Monero:
-47Jc6MC47WJVFhiQFYwHyBNQP5BEsjUPG6tc8R37FwcTY8K5Y3LvFzveSXoGiaDQSxDrnCUBJ5WBj6Fgmsfix8VPD4w3gXF
+Monero: Siehe QR-Code im Sponsor-Dialog
 
 Vielen Dank für Ihre Unterstützung!
         ''',

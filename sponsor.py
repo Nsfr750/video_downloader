@@ -3,7 +3,35 @@
 This module provides information about how to support the project.
 """
 
+import os
 from lang import _
+from wand.image import Image
+import qrcode
+
+
+MONERO_ADDRESS = "47Jc6MC47WJVFhiQFYwHyBNQP5BEsjUPG6tc8R37FwcTY8K5Y3LvFzveSXoGiaDQSxDrnCUBJ5WBj6Fgmsfix8VPD4w3gXF"
+
+
+def generate_monero_qrcode() -> str:
+    """Generate QR code for Monero address.
+
+    Returns:
+        Path to the generated QR code image
+    """
+    qr = qrcode.QRCode(
+        version=1,
+        error_correction=qrcode.constants.ERROR_CORRECT_L,
+        box_size=10,
+        border=4,
+    )
+    qr.add_data(MONERO_ADDRESS)
+    qr.make(fit=True)
+
+    img = qr.make_image(fill_color="black", back_color="white")
+    qr_path = os.path.join(os.path.dirname(__file__), "monero_qrcode.png")
+    img.save(qr_path)
+
+    return qr_path
 
 
 def show_sponsor() -> None:
@@ -29,10 +57,31 @@ PayPal:
 - Supports multiple currencies
 
 Monero (XMR):
-- Address: 47Jc6MC47WJVFhiQFYwHyBNQP5BEsjUPG6tc8R37FwcTY8K5Y3LvFzveSXoGiaDQSxDrnCUBJ5WBj6Fgmsfix8VPD4w3gXF
-- Privacy-focused cryptocurrency
-- No transaction fees for the developer
+    """)
 
+    # Generate and display QR code
+    try:
+        qr_path = generate_monero_qrcode()
+        print(f"QR Code saved to: {qr_path}")
+        print("Scan the QR code below to donate Monero:")
+
+        # Open the QR code image with default image viewer
+        if os.name == 'nt':  # Windows
+            os.startfile(qr_path)
+        elif os.name == 'posix':  # Linux/Mac
+            import subprocess
+            if 'darwin' in os.uname().sysname.lower():  # macOS
+                subprocess.run(['open', qr_path])
+            else:  # Linux
+                subprocess.run(['xdg-open', qr_path])
+
+        print("\nPrivacy-focused cryptocurrency")
+        print("No transaction fees for the developer")
+    except Exception as e:
+        print(f"Error generating QR code: {e}")
+        print(f"Monero Address: {MONERO_ADDRESS}")
+
+    print("""
 Why donate?
 - Support ongoing development
 - Help cover server costs
