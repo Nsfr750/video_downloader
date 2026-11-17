@@ -28,7 +28,7 @@ class UpdateManager:
         """Check for available updates.
 
         Returns:
-            Latest version string if update is available, None otherwise
+            Latest version string if available, None if error occurred
         """
         try:
             self.logger.info("Checking for updates...")
@@ -43,10 +43,7 @@ class UpdateManager:
                 self.logger.info(f"Latest version: {latest_version}")
                 self.logger.info(f"Current version: {__version__}")
 
-                if self._compare_versions(latest_version, __version__) > 0:
-                    return latest_version
-
-            return None
+            return latest_version
 
         except urllib.error.HTTPError as e:
             if e.code == 404:
