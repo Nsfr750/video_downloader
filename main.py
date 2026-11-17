@@ -13,7 +13,7 @@ from logger import get_logger
 from lang import get_language_manager, _
 from version import __version__
 
-COPYRIGHT = "© Copyright 2024-2026 Nsfr750 - All rights reserved."
+COPYRIGHT = "© Copyright 2024-2026 Tuxxle - All rights reserved."
 
 
 class VideoDownloader:

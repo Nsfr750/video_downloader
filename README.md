@@ -72,7 +72,7 @@ See [SECURITY.md](SECURITY.md) for more information.
 This project is licensed under the GNU General Public License v3.0. See the [LICENSE](LICENSE) file for details.
 
 ## Copyright
-© Copyright 2024-2026 Nsfr750 - All rights reserved.
+© Copyright 2024-2026 Tuxxle - All rights reserved.
 
 ## Author
 

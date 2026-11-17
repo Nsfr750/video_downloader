@@ -72,4 +72,4 @@ This project is licensed under the GNU General Public License v3.0. See the [LIC
 - **Website**: https://www.tuxxle.org
 - **GitHub**: https://github.com/Nsfr750
 
-© Copyright 2024-2026 Nsfr750 - All rights reserved.
+© Copyright 2024-2026 Tuxxle - All rights reserved.

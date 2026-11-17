@@ -5,7 +5,7 @@ Script to clean __pycache__ directories and .pyc files.
 This script recursively finds and removes all __pycache__ directories
 and .pyc files from the project directory and its subdirectories.
 
-Copyright (C) 2024-2026 Nsfr750
+Copyright (C) 2024-2026 Tuxxle
 This program is free software: you can redistribute it and/or modify
 it under the terms of the GNU General Public License as published by
 the Free Software Foundation, either version 3 of the License, or
@@ -19,7 +19,7 @@ GNU General Public License for more details.
 You should have received a copy of the GNU General Public License
 along with this program.  If not, see <https://www.gnu.org/licenses/>.
 
-© Copyright 2024-2026 Nsfr750 - All rights reserved.
+© Copyright 2024-2026 Tuxxle - All rights reserved.
 """
 
 import os

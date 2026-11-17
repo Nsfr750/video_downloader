@@ -10,7 +10,7 @@ from logger import get_logger
 from lang import _
 from version import __version__
 
-COPYRIGHT = "© Copyright 2024-2026 Nsfr750 - All rights reserved."
+COPYRIGHT = "© Copyright 2024-2026 Tuxxle - All rights reserved."
 
 # GitHub repository information
 GITHUB_REPO = "Nsfr750/video_downloader"

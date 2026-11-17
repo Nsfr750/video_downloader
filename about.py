@@ -6,7 +6,7 @@ This module provides information about the application, author, and credits.
 from lang import _
 from version import __version__
 
-COPYRIGHT = "© Copyright 2024-2026 Nsfr750 - All rights reserved."
+COPYRIGHT = "© Copyright 2024-2026 Tuxxle - All rights reserved."
 
 
 def show_about() -> None:
