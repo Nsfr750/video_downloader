@@ -60,6 +60,8 @@ class Menu:
         print(f"{'='*50}")
 
         downloader = VideoDownloader()
+        quality = downloader.select_quality()
+        downloader.quality = quality
         urls = downloader.get_urls_from_user()
         downloader.download_videos(urls)
 

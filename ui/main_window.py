@@ -20,6 +20,17 @@ from version import __version__
 
 COPYRIGHT = "© Copyright 2024-2026 Tuxxle - All rights reserved."
 
+# Quality options mapping
+QUALITY_OPTIONS = {
+    'best': 'best',
+    'worst': 'worst',
+    '1080p': 'bestvideo[height<=1080]+bestaudio/best[height<=1080]',
+    '720p': 'bestvideo[height<=720]+bestaudio/best[height<=720]',
+    '480p': 'bestvideo[height<=480]+bestaudio/best[height<=480]',
+    '360p': 'bestvideo[height<=360]+bestaudio/best[height<=360]',
+    'audio': 'bestaudio/best',
+}
+
 
 class DownloadThread(QThread):
     """Thread for downloading videos to keep UI responsive."""
@@ -28,16 +39,18 @@ class DownloadThread(QThread):
     download_complete = Signal(str, bool)   # url, success
     download_finished = Signal(int, int)    # successful, failed
 
-    def __init__(self, urls: List[str], download_dir: str):
+    def __init__(self, urls: List[str], download_dir: str, quality: str = "best"):
         """Initialize download thread.
-        
+
         Args:
             urls: List of URLs to download
             download_dir: Directory to save videos
+            quality: Video quality (best, worst, 1080p, 720p, 480p, 360p, audio)
         """
         super().__init__()
         self.urls = urls
         self.download_dir = download_dir
+        self.quality = quality
         self.logger = get_logger()
         import yt_dlp
         self.yt_dlp = yt_dlp
@@ -52,7 +65,7 @@ class DownloadThread(QThread):
                 self.logger.info(_('downloading').format(url=url))
 
                 ydl_opts = {
-                    'format': 'best',
+                    'format': QUALITY_OPTIONS.get(self.quality, 'best'),
                     'outtmpl': os.path.join(self.download_dir, '%(title)s.%(ext)s'),
                     'quiet': True,
                     'no_warnings': True,
@@ -97,6 +110,7 @@ class MainWindow(QMainWindow):
         self.logger = get_logger()
         self.lang_manager = get_language_manager()
         self.download_dir = "downloads"
+        self.quality = "best"
         self.urls: List[str] = []
         self.download_thread: Optional[DownloadThread] = None
 
@@ -163,6 +177,28 @@ class MainWindow(QMainWindow):
 
         url_group.setLayout(url_layout)
         layout.addWidget(url_group)
+
+        # Quality selection section
+        quality_group = QGroupBox(_('quality_title'))
+        quality_layout = QHBoxLayout()
+
+        quality_label = QLabel(_('quality_select'))
+        quality_layout.addWidget(quality_label)
+
+        self.quality_combo = QComboBox()
+        self.quality_combo.addItem(_('quality_best'), 'best')
+        self.quality_combo.addItem(_('quality_worst'), 'worst')
+        self.quality_combo.addItem('1080p', '1080p')
+        self.quality_combo.addItem('720p', '720p')
+        self.quality_combo.addItem('480p', '480p')
+        self.quality_combo.addItem('360p', '360p')
+        self.quality_combo.addItem(_('quality_audio'), 'audio')
+        self.quality_combo.setCurrentIndex(0)
+        self.quality_combo.currentIndexChanged.connect(self._on_quality_changed)
+        quality_layout.addWidget(self.quality_combo)
+
+        quality_group.setLayout(quality_layout)
+        layout.addWidget(quality_group)
 
         # Download directory section
         dir_group = QGroupBox(_('ui_download_dir'))
@@ -342,7 +378,7 @@ class MainWindow(QMainWindow):
 
         self.status_text.append(_('ui_download_started').format(count=len(self.urls)))
 
-        self.download_thread = DownloadThread(self.urls, self.download_dir)
+        self.download_thread = DownloadThread(self.urls, self.download_dir, self.quality)
         self.download_thread.progress_updated.connect(self._update_progress)
         self.download_thread.download_complete.connect(self._download_complete)
         self.download_thread.download_finished.connect(self._download_finished)

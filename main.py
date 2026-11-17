@@ -19,13 +19,26 @@ COPYRIGHT = "© Copyright 2024-2026 Tuxxle - All rights reserved."
 class VideoDownloader:
     """Main video downloader class."""
 
-    def __init__(self, download_dir: str = "downloads"):
+    # Quality options mapping
+    QUALITY_OPTIONS = {
+        'best': 'best',
+        'worst': 'worst',
+        '1080p': 'bestvideo[height<=1080]+bestaudio/best[height<=1080]',
+        '720p': 'bestvideo[height<=720]+bestaudio/best[height<=720]',
+        '480p': 'bestvideo[height<=480]+bestaudio/best[height<=480]',
+        '360p': 'bestvideo[height<=360]+bestaudio/best[height<=360]',
+        'audio': 'bestaudio/best',
+    }
+
+    def __init__(self, download_dir: str = "downloads", quality: str = "best"):
         """Initialize the video downloader.
 
         Args:
             download_dir: Directory to save downloaded videos
+            quality: Video quality (best, worst, 1080p, 720p, 480p, 360p, audio)
         """
         self.download_dir = download_dir
+        self.quality = quality
         self.logger = get_logger()
         self.lang_manager = get_language_manager()
 
@@ -50,6 +63,43 @@ class VideoDownloader:
             urls.append(url)
 
         return urls
+
+    def select_quality(self) -> str:
+        """Select video quality from user input.
+
+        Returns:
+            Selected quality option
+        """
+        print(f"\n{'='*50}")
+        print(_('quality_title'))
+        print(f"{'='*50}")
+        print(_('quality_select'))
+        print("1. " + _('quality_best'))
+        print("2. " + _('quality_worst'))
+        print("3. " + _('quality_1080p'))
+        print("4. " + _('quality_720p'))
+        print("5. " + _('quality_480p'))
+        print("6. " + _('quality_360p'))
+        print("7. " + _('quality_audio'))
+        print(f"{'='*50}")
+
+        quality_map = {
+            '1': 'best',
+            '2': 'worst',
+            '3': '1080p',
+            '4': '720p',
+            '5': '480p',
+            '6': '360p',
+            '7': 'audio',
+        }
+
+        while True:
+            choice = input(_('quality_default')).strip()
+            if not choice:
+                return 'best'
+            if choice in quality_map:
+                return quality_map[choice]
+            print(_('quality_invalid'))
 
     def validate_url(self, url: str) -> bool:
         """Validate a URL.
@@ -87,7 +137,7 @@ class VideoDownloader:
 
             # Configure yt-dlp options
             ydl_opts = {
-                'format': 'best',
+                'format': self.QUALITY_OPTIONS.get(self.quality, 'best'),
                 'outtmpl': os.path.join(self.download_dir, '%(title)s.%(ext)s'),
                 'quiet': False,
                 'no_warnings': False,
