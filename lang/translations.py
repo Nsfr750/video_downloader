@@ -57,7 +57,7 @@ Video Downloader v{}
 
 A Python application for downloading videos from the internet using yt-dlp.
 
-© Copyright 2024-2026 Nsfr750 - All rights reserved.
+© Copyright 2024-2026 Tuxxle - All rights reserved.
 
 Author: Nsfr750
 Website: https://www.tuxxle.org
@@ -179,7 +179,7 @@ Video Downloader v{}
 
 Un\'applicazione Python per scaricare video da internet usando yt-dlp.
 
-© Copyright 2024-2026 Nsfr750 - Tutti i diritti riservati.
+© Copyright 2024-2026 Tuxxle - Tutti i diritti riservati.
 
 Autore: Nsfr750
 Sito web: https://www.tuxxle.org
@@ -301,7 +301,7 @@ Video Downloader v{}
 
 Una aplicación Python para descargar videos de internet usando yt-dlp.
 
-© Copyright 2024-2026 Nsfr750 - Todos los derechos reservados.
+© Copyright 2024-2026 Tuxxle - Todos los derechos reservados.
 
 Autor: Nsfr750
 Sitio web: https://www.tuxxle.org
@@ -423,7 +423,7 @@ Video Downloader v{}
 
 Une application Python pour télécharger des vidéos d\'internet en utilisant yt-dlp.
 
-© Copyright 2024-2026 Nsfr750 - Tous droits réservés.
+© Copyright 2024-2026 Tuxxle - Tous droits réservés.
 
 Auteur: Nsfr750
 Site web: https://www.tuxxle.org
@@ -545,7 +545,7 @@ Video Downloader v{}
 
 Eine Python-Anwendung zum Herunterladen von Videos aus dem Internet mit yt-dlp.
 
-© Copyright 2024-2026 Nsfr750 - Alle Rechte vorbehalten.
+© Copyright 2024-2026 Tuxxle - Alle Rechte vorbehalten.
 
 Autor: Nsfr750
 Website: https://www.tuxxle.org
