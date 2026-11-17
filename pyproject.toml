@@ -1,0 +1,36 @@
+[build-system]
+requires = ["setuptools>=61.0", "wheel"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "video_downloader"
+version = "1.0.0"
+description = "Video Downloader Application"
+readme = "README.md"
+requires-python = ">=3.13"
+license = {text = "GPL-3.0"}
+authors = [
+    {name = "Nsfr750", email = "nsfr750@yandex.com"}
+]
+classifiers = [
+    "Development Status :: 4 - Beta",
+    "Intended Audience :: End Users/Desktop",
+    "License :: OSI Approved :: GNU General Public License v3 (GPLv3)",
+    "Programming Language :: Python :: 3.13",
+    "Programming Language :: Python :: 3.14",
+    "Operating System :: OS Independent",
+]
+dependencies = [
+    "yt-dlp>=2024.1.1",
+    "Wand>=0.6.11",
+    "PySide6>=6.6.0",
+]
+
+[project.optional-dependencies]
+dev = [
+    "pytest>=7.4.0",
+]
+
+[project.urls]
+Homepage = "https://www.tuxxle.org"
+Repository = "https://github.com/Nsfr750/video_downloader"

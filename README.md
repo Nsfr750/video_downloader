@@ -12,30 +12,46 @@ A Python application for downloading videos from the internet using yt-dlp.
 - Graphical User Interface (GUI) with PySide6
 - Command Line Interface (CLI) mode
 
+## Requirements
+
+- Python 3.13 or higher
+- yt-dlp
+- Wand
+- PySide6
+- pytest (for testing)
+
 ## Installation
+
+```bash
+py -3.13 -m pip install -r requirements.txt
+```
+
+Or if Python 3.13 is your default:
 
 ```bash
 pip install -r requirements.txt
 ```
+
+**Note**: Use `py -3.13` to ensure Python 3.13 is used for all commands.
 
 ## Usage
 
 ### GUI Mode (Default)
 
 ```bash
-python main.py
+py -3.13 main.py
 ```
 
 Or explicitly:
 
 ```bash
-python main.py --gui
+py -3.13 main.py --gui
 ```
 
 ### CLI Mode
 
 ```bash
-python main.py --cli
+py -3.13 main.py --cli
 ```
 
 ## Configuration

@@ -48,6 +48,12 @@ class UpdateManager:
 
             return None
 
+        except urllib.error.HTTPError as e:
+            if e.code == 404:
+                self.logger.info("No releases found on GitHub (repository may not have any releases yet)")
+            else:
+                self.logger.error(f"HTTP error checking for updates: {e}")
+            return None
         except urllib.error.URLError as e:
             self.logger.error(f"Network error checking for updates: {e}")
             return None
