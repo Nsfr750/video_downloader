@@ -22,6 +22,6 @@
 - [x] Create SECURITY.md
 - [x] Update README.md with GUI and security info
 - [x] Update CHANGELOG.md with all features
-- [ ] Add quality selection options
+- [x] Add quality selection options
 - [ ] Add playlist support
-- [ ] Add format conversion options
+- [x] Add format conversion options
