@@ -30,15 +30,29 @@ class VideoDownloader:
         'audio': 'bestaudio/best',
     }
 
-    def __init__(self, download_dir: str = "downloads", quality: str = "best"):
+    # Format options mapping
+    FORMAT_OPTIONS = {
+        'auto': None,  # Keep original format
+        'mp4': 'mp4',
+        'webm': 'webm',
+        'mkv': 'mkv',
+        'avi': 'avi',
+        'mp3': 'mp3',  # Audio only
+        'm4a': 'm4a',  # Audio only
+        'wav': 'wav',  # Audio only
+    }
+
+    def __init__(self, download_dir: str = "downloads", quality: str = "best", format: str = "auto"):
         """Initialize the video downloader.
 
         Args:
             download_dir: Directory to save downloaded videos
             quality: Video quality (best, worst, 1080p, 720p, 480p, 360p, audio)
+            format: Output format (auto, mp4, webm, mkv, avi, mp3, m4a, wav)
         """
         self.download_dir = download_dir
         self.quality = quality
+        self.format = format
         self.logger = get_logger()
         self.lang_manager = get_language_manager()
 
@@ -101,6 +115,45 @@ class VideoDownloader:
                 return quality_map[choice]
             print(_('quality_invalid'))
 
+    def select_format(self) -> str:
+        """Select output format from user input.
+
+        Returns:
+            Selected format option
+        """
+        print(f"\n{'='*50}")
+        print(_('format_title'))
+        print(f"{'='*50}")
+        print(_('format_select'))
+        print("1. " + _('format_auto'))
+        print("2. MP4")
+        print("3. WebM")
+        print("4. MKV")
+        print("5. AVI")
+        print("6. MP3 (audio)")
+        print("7. M4A (audio)")
+        print("8. WAV (audio)")
+        print(f"{'='*50}")
+
+        format_map = {
+            '1': 'auto',
+            '2': 'mp4',
+            '3': 'webm',
+            '4': 'mkv',
+            '5': 'avi',
+            '6': 'mp3',
+            '7': 'm4a',
+            '8': 'wav',
+        }
+
+        while True:
+            choice = input(_('format_default')).strip()
+            if not choice:
+                return 'auto'
+            if choice in format_map:
+                return format_map[choice]
+            print(_('format_invalid'))
+
     def validate_url(self, url: str) -> bool:
         """Validate a URL.
 
@@ -143,6 +196,10 @@ class VideoDownloader:
                 'no_warnings': False,
                 'progress_hooks': [self._progress_hook],
             }
+
+            # Add format conversion if specified
+            if self.format != 'auto':
+                ydl_opts['merge_output_format'] = self.FORMAT_OPTIONS.get(self.format)
 
             with yt_dlp.YoutubeDL(ydl_opts) as ydl:
                 ydl.download([url])

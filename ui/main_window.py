@@ -31,6 +31,18 @@ QUALITY_OPTIONS = {
     'audio': 'bestaudio/best',
 }
 
+# Format options mapping
+FORMAT_OPTIONS = {
+    'auto': None,
+    'mp4': 'mp4',
+    'webm': 'webm',
+    'mkv': 'mkv',
+    'avi': 'avi',
+    'mp3': 'mp3',
+    'm4a': 'm4a',
+    'wav': 'wav',
+}
+
 
 class DownloadThread(QThread):
     """Thread for downloading videos to keep UI responsive."""
@@ -39,18 +51,20 @@ class DownloadThread(QThread):
     download_complete = Signal(str, bool)   # url, success
     download_finished = Signal(int, int)    # successful, failed
 
-    def __init__(self, urls: List[str], download_dir: str, quality: str = "best"):
+    def __init__(self, urls: List[str], download_dir: str, quality: str = "best", format: str = "auto"):
         """Initialize download thread.
 
         Args:
             urls: List of URLs to download
             download_dir: Directory to save videos
             quality: Video quality (best, worst, 1080p, 720p, 480p, 360p, audio)
+            format: Output format (auto, mp4, webm, mkv, avi, mp3, m4a, wav)
         """
         super().__init__()
         self.urls = urls
         self.download_dir = download_dir
         self.quality = quality
+        self.format = format
         self.logger = get_logger()
         import yt_dlp
         self.yt_dlp = yt_dlp
@@ -70,6 +84,11 @@ class DownloadThread(QThread):
                     'quiet': True,
                     'no_warnings': True,
                     'progress_hooks': [self._progress_hook],
+                }
+
+                # Add format conversion if specified
+                if self.format != 'auto':
+                    ydl_opts['merge_output_format'] = FORMAT_OPTIONS.get(self.format)
                 }
 
                 with self.yt_dlp.YoutubeDL(ydl_opts) as ydl:
@@ -111,6 +130,7 @@ class MainWindow(QMainWindow):
         self.lang_manager = get_language_manager()
         self.download_dir = "downloads"
         self.quality = "best"
+        self.format = "auto"
         self.urls: List[str] = []
         self.download_thread: Optional[DownloadThread] = None
 
@@ -199,6 +219,29 @@ class MainWindow(QMainWindow):
 
         quality_group.setLayout(quality_layout)
         layout.addWidget(quality_group)
+
+        # Format selection section
+        format_group = QGroupBox(_('format_title'))
+        format_layout = QHBoxLayout()
+
+        format_label = QLabel(_('format_select'))
+        format_layout.addWidget(format_label)
+
+        self.format_combo = QComboBox()
+        self.format_combo.addItem(_('format_auto'), 'auto')
+        self.format_combo.addItem('MP4', 'mp4')
+        self.format_combo.addItem('WebM', 'webm')
+        self.format_combo.addItem('MKV', 'mkv')
+        self.format_combo.addItem('AVI', 'avi')
+        self.format_combo.addItem('MP3 (audio)', 'mp3')
+        self.format_combo.addItem('M4A (audio)', 'm4a')
+        self.format_combo.addItem('WAV (audio)', 'wav')
+        self.format_combo.setCurrentIndex(0)
+        self.format_combo.currentIndexChanged.connect(self._on_format_changed)
+        format_layout.addWidget(self.format_combo)
+
+        format_group.setLayout(format_layout)
+        layout.addWidget(format_group)
 
         # Download directory section
         dir_group = QGroupBox(_('ui_download_dir'))
@@ -370,6 +413,14 @@ class MainWindow(QMainWindow):
         """
         self.quality = self.quality_combo.itemData(index)
 
+    def _on_format_changed(self, index: int) -> None:
+        """Handle format selection change.
+
+        Args:
+            index: Index of selected format
+        """
+        self.format = self.format_combo.itemData(index)
+
     def _start_download(self) -> None:
         """Start the download process."""
         if not self.urls:
@@ -386,7 +437,7 @@ class MainWindow(QMainWindow):
 
         self.status_text.append(_('ui_download_started').format(count=len(self.urls)))
 
-        self.download_thread = DownloadThread(self.urls, self.download_dir, self.quality)
+        self.download_thread = DownloadThread(self.urls, self.download_dir, self.quality, self.format)
         self.download_thread.progress_updated.connect(self._update_progress)
         self.download_thread.download_complete.connect(self._download_complete)
         self.download_thread.download_finished.connect(self._download_finished)

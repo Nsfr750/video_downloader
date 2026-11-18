@@ -62,6 +62,8 @@ class Menu:
         downloader = VideoDownloader()
         quality = downloader.select_quality()
         downloader.quality = quality
+        format = downloader.select_format()
+        downloader.format = format
         urls = downloader.get_urls_from_user()
         downloader.download_videos(urls)
 
