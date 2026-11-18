@@ -132,6 +132,8 @@ class MainWindow(QMainWindow):
         self.format = "auto"
         self.urls: List[str] = []
         self.download_thread: Optional[DownloadThread] = None
+        self.quality_group = None
+        self.format_group = None
 
         self._init_ui()
         self._update_language()
@@ -218,6 +220,7 @@ class MainWindow(QMainWindow):
 
         quality_group.setLayout(quality_layout)
         layout.addWidget(quality_group)
+        self.quality_group = quality_group
 
         # Format selection section
         format_group = QGroupBox(_('format_title'))
@@ -241,6 +244,7 @@ class MainWindow(QMainWindow):
 
         format_group.setLayout(format_layout)
         layout.addWidget(format_group)
+        self.format_group = format_group
 
         # Download directory section
         dir_group = QGroupBox(_('ui_download_dir'))
@@ -546,6 +550,12 @@ class MainWindow(QMainWindow):
         self.close_button.setText(_('close'))
         self.close_button_logs.setText(_('close'))
         self.close_button_settings.setText(_('close'))
+
+        # Update quality and format group titles
+        if self.quality_group:
+            self.quality_group.setTitle(_('quality_title'))
+        if self.format_group:
+            self.format_group.setTitle(_('format_title'))
 
         # Update quality dropdown
         current_quality = self.quality_combo.currentData()
