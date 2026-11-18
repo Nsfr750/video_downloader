@@ -207,10 +207,10 @@ class MainWindow(QMainWindow):
         self.quality_combo = QComboBox()
         self.quality_combo.addItem(_('quality_best'), 'best')
         self.quality_combo.addItem(_('quality_worst'), 'worst')
-        self.quality_combo.addItem('1080p', '1080p')
-        self.quality_combo.addItem('720p', '720p')
-        self.quality_combo.addItem('480p', '480p')
-        self.quality_combo.addItem('360p', '360p')
+        self.quality_combo.addItem(_('quality_1080p_label'), '1080p')
+        self.quality_combo.addItem(_('quality_720p_label'), '720p')
+        self.quality_combo.addItem(_('quality_480p_label'), '480p')
+        self.quality_combo.addItem(_('quality_360p_label'), '360p')
         self.quality_combo.addItem(_('quality_audio'), 'audio')
         self.quality_combo.setCurrentIndex(0)
         self.quality_combo.currentIndexChanged.connect(self._on_quality_changed)
@@ -228,13 +228,13 @@ class MainWindow(QMainWindow):
 
         self.format_combo = QComboBox()
         self.format_combo.addItem(_('format_auto'), 'auto')
-        self.format_combo.addItem('MP4', 'mp4')
-        self.format_combo.addItem('WebM', 'webm')
-        self.format_combo.addItem('MKV', 'mkv')
-        self.format_combo.addItem('AVI', 'avi')
-        self.format_combo.addItem('MP3 (audio)', 'mp3')
-        self.format_combo.addItem('M4A (audio)', 'm4a')
-        self.format_combo.addItem('WAV (audio)', 'wav')
+        self.format_combo.addItem(_('format_mp4'), 'mp4')
+        self.format_combo.addItem(_('format_webm'), 'webm')
+        self.format_combo.addItem(_('format_mkv'), 'mkv')
+        self.format_combo.addItem(_('format_avi'), 'avi')
+        self.format_combo.addItem(_('format_mp3'), 'mp3')
+        self.format_combo.addItem(_('format_m4a'), 'm4a')
+        self.format_combo.addItem(_('format_wav'), 'wav')
         self.format_combo.setCurrentIndex(0)
         self.format_combo.currentIndexChanged.connect(self._on_format_changed)
         format_layout.addWidget(self.format_combo)
@@ -558,7 +558,7 @@ class MainWindow(QMainWindow):
         layout = QVBoxLayout()
 
         # PayPal section
-        paypal_label = QLabel("PayPal:")
+        paypal_label = QLabel(_('paypal_label'))
         paypal_label.setStyleSheet("font-weight: bold;")
         layout.addWidget(paypal_label)
 
@@ -569,7 +569,7 @@ class MainWindow(QMainWindow):
         layout.addSpacing(20)
 
         # Monero section
-        monero_label = QLabel("Monero (XMR):")
+        monero_label = QLabel(_('monero_label'))
         monero_label.setStyleSheet("font-weight: bold;")
         layout.addWidget(monero_label)
 
@@ -583,9 +583,9 @@ class MainWindow(QMainWindow):
                 qr_label.setAlignment(Qt.AlignCenter)
                 layout.addWidget(qr_label)
             else:
-                layout.addWidget(QLabel("Could not load QR code"))
+                layout.addWidget(QLabel(_('qr_error_load')))
         except Exception as e:
-            layout.addWidget(QLabel(f"Error generating QR code: {e}"))
+            layout.addWidget(QLabel(_('qr_error_generate').format(error=str(e))))
 
         # Close button
         close_button = QPushButton(_('close'))
