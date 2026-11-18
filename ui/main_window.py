@@ -134,6 +134,8 @@ class MainWindow(QMainWindow):
         self.download_thread: Optional[DownloadThread] = None
         self.quality_group = None
         self.format_group = None
+        self.quality_label = None
+        self.format_label = None
 
         self._init_ui()
         self._update_language()
@@ -205,6 +207,7 @@ class MainWindow(QMainWindow):
 
         quality_label = QLabel(_('quality_select'))
         quality_layout.addWidget(quality_label)
+        self.quality_label = quality_label
 
         self.quality_combo = QComboBox()
         self.quality_combo.addItem(_('quality_best'), 'best')
@@ -228,6 +231,7 @@ class MainWindow(QMainWindow):
 
         format_label = QLabel(_('format_select'))
         format_layout.addWidget(format_label)
+        self.format_label = format_label
 
         self.format_combo = QComboBox()
         self.format_combo.addItem(_('format_auto'), 'auto')
@@ -551,11 +555,15 @@ class MainWindow(QMainWindow):
         self.close_button_logs.setText(_('close'))
         self.close_button_settings.setText(_('close'))
 
-        # Update quality and format group titles
+        # Update quality and format group titles and labels
         if self.quality_group:
             self.quality_group.setTitle(_('quality_title'))
+        if self.quality_label:
+            self.quality_label.setText(_('quality_select'))
         if self.format_group:
             self.format_group.setTitle(_('format_title'))
+        if self.format_label:
+            self.format_label.setText(_('format_select'))
 
         # Update quality dropdown
         current_quality = self.quality_combo.currentData()
