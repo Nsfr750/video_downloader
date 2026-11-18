@@ -362,6 +362,14 @@ class MainWindow(QMainWindow):
             if not os.path.exists(directory):
                 os.makedirs(directory)
 
+    def _on_quality_changed(self, index: int) -> None:
+        """Handle quality selection change.
+
+        Args:
+            index: Index of selected quality
+        """
+        self.quality = self.quality_combo.itemData(index)
+
     def _start_download(self) -> None:
         """Start the download process."""
         if not self.urls:

@@ -135,7 +135,8 @@ Thank you for your support!
         'ui_download_finished': 'Download finished',
         'ui_download_summary': 'Download Summary',
         'ui_successful': 'Successful: {count}',
-        'ui_failed_count': 'Failed: {count}'
+        'ui_failed_count': 'Failed: {count}',
+        'url_list': 'URL List',
     },
     'it': {
         'app_name': 'Video Downloader',
@@ -268,7 +269,8 @@ Grazie per il tuo supporto!
         'ui_download_finished': 'Download completato',
         'ui_download_summary': 'Riepilogo Download',
         'ui_successful': 'Riusciti: {count}',
-        'ui_failed_count': 'Falliti: {count}'
+        'ui_failed_count': 'Falliti: {count}',
+        'url_list': 'Lista URL',
     },
     'es': {
         'app_name': 'Video Downloader',
@@ -401,7 +403,8 @@ Monero: Ver el código QR en el diálogo de patrocinador
         'ui_download_finished': 'Descarga finalizada',
         'ui_download_summary': 'Resumen de Descarga',
         'ui_successful': 'Exitosos: {count}',
-        'ui_failed_count': 'Fallidos: {count}'
+        'ui_failed_count': 'Fallidos: {count}',
+        'url_list': 'Lista de URLs',
     },
     'fr': {
         'app_name': 'Video Downloader',
@@ -534,7 +537,8 @@ Merci pour votre soutien!
         'ui_download_finished': 'Téléchargement terminé',
         'ui_download_summary': 'Résumé du Téléchargement',
         'ui_successful': 'Réussis: {count}',
-        'ui_failed_count': 'Échoués: {count}'
+        'ui_failed_count': 'Échoués: {count}',
+        'url_list': 'Liste URLs',
     },
     'de': {
         'app_name': 'Video Downloader',
@@ -667,6 +671,7 @@ Vielen Dank für Ihre Unterstützung!
         'ui_download_finished': 'Download abgeschlossen',
         'ui_download_summary': 'Download-Zusammenfassung',
         'ui_successful': 'Erfolgreich: {count}',
-        'ui_failed_count': 'Fehlgeschlagen: {count}'
+        'ui_failed_count': 'Fehlgeschlagen: {count}',
+        'url_list': 'URL-Liste',
     }
 }
