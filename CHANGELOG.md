@@ -5,20 +5,30 @@ All notable changes to Video Downloader will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
-## [1.1.0] - 2026-11-17
+## [1.1.0] - 2026-11-18
 
 ### Added
 - QR code for Monero donations in sponsor dialog
 - Python 3.13 support with pyproject.toml configuration
 - .python-version file for pyenv
+- Quality selection options for video downloads (best, worst, 1080p, 720p, 480p, 360p, audio)
+- Format conversion options (auto, mp4, webm, mkv, avi, mp3, m4a, wav)
+- Quality selection dropdown in GUI
+- Format selection dropdown in GUI
+- Quality selection menu in CLI
+- Format selection menu in CLI
 
 ### Changed
 - Improved update check logic to properly handle version comparison
 - Updated sponsor dialog to display QR code instead of text address
 - Better error handling for GitHub API 404 errors
+- Updated copyright from Nsfr750 to Tuxxle
+- Fixed GUI translations for all hardcoded text
 
 ### Fixed
 - Update system now correctly shows "latest version" message when no update is available
+- Fixed syntax error in main_window.py
+- All GUI text now properly translates when language is changed
 
 ## [1.0.0] - 2026-09-12
 

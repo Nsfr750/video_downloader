@@ -23,5 +23,16 @@
 - [x] Update README.md with GUI and security info
 - [x] Update CHANGELOG.md with all features
 - [x] Add quality selection options
-- [ ] Add playlist support
 - [x] Add format conversion options
+- [x] Configure Python 3.13 support
+- [x] Add QR code for Monero donations
+- [x] Update copyright to Tuxxle
+- [x] Fix GUI translations for all hardcoded text
+- [ ] Add playlist support
+- [ ] Add subtitle download options
+- [ ] Add download queue management
+- [ ] Add download history
+- [ ] Add batch download from file
+- [ ] Add proxy support
+- [ ] Add authentication for premium sites
+- [ ] Add download speed limit options
