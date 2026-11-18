@@ -247,7 +247,7 @@ Un\'applicazione Python per scaricare video da internet usando yt-dlp.
 Autore: Nsfr750
 Sito web: https://www.tuxxle.org
 Email: nsfr750@yandex.com
-GitHub: https://github.com/Nsfr750
+GitHub: https://github.com/Nsfr750py clean_pycache.py
 
 Organizzazione: Tuxxle
 Licenza: GPLv3
