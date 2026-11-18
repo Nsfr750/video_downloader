@@ -89,7 +89,6 @@ class DownloadThread(QThread):
                 # Add format conversion if specified
                 if self.format != 'auto':
                     ydl_opts['merge_output_format'] = FORMAT_OPTIONS.get(self.format)
-                }
 
                 with self.yt_dlp.YoutubeDL(ydl_opts) as ydl:
                     ydl.download([url])
