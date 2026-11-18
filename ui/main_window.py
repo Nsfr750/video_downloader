@@ -547,6 +547,37 @@ class MainWindow(QMainWindow):
         self.close_button_logs.setText(_('close'))
         self.close_button_settings.setText(_('close'))
 
+        # Update quality dropdown
+        current_quality = self.quality_combo.currentData()
+        self.quality_combo.clear()
+        self.quality_combo.addItem(_('quality_best'), 'best')
+        self.quality_combo.addItem(_('quality_worst'), 'worst')
+        self.quality_combo.addItem(_('quality_1080p_label'), '1080p')
+        self.quality_combo.addItem(_('quality_720p_label'), '720p')
+        self.quality_combo.addItem(_('quality_480p_label'), '480p')
+        self.quality_combo.addItem(_('quality_360p_label'), '360p')
+        self.quality_combo.addItem(_('quality_audio'), 'audio')
+        # Restore selection
+        index = self.quality_combo.findData(current_quality)
+        if index >= 0:
+            self.quality_combo.setCurrentIndex(index)
+
+        # Update format dropdown
+        current_format = self.format_combo.currentData()
+        self.format_combo.clear()
+        self.format_combo.addItem(_('format_auto'), 'auto')
+        self.format_combo.addItem(_('format_mp4'), 'mp4')
+        self.format_combo.addItem(_('format_webm'), 'webm')
+        self.format_combo.addItem(_('format_mkv'), 'mkv')
+        self.format_combo.addItem(_('format_avi'), 'avi')
+        self.format_combo.addItem(_('format_mp3'), 'mp3')
+        self.format_combo.addItem(_('format_m4a'), 'm4a')
+        self.format_combo.addItem(_('format_wav'), 'wav')
+        # Restore selection
+        index = self.format_combo.findData(current_format)
+        if index >= 0:
+            self.format_combo.setCurrentIndex(index)
+
     def _show_sponsor(self) -> None:
         """Show sponsor information dialog with QR code."""
         from sponsor import generate_monero_qrcode
