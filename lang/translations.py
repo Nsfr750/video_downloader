@@ -64,24 +64,36 @@ TRANSLATIONS = {
 Video Downloader Help
 
 1. Download Videos:
-   - Enter one or more video URLs
-   - Press Enter on an empty line to start downloading
+   - Add one or more video URLs (CLI: one per line, empty line to start)
+   - Choose the download directory (default: downloads)
    - Supported platforms: YouTube, Vimeo, and many more
 
-2. Settings:
-   - Change language
-   - Set download directory
-   - Choose preferred video format
+2. Quality and Format:
+   - Quality: best, worst, 1080p, 720p, 480p, 360p or audio only
+   - Format: auto keeps the original format, or choose
+     mp4, webm, mkv, avi, mp3, m4a, wav
 
-3. Logs:
+3. Playlists:
+   - Enable the playlist option to download every video of a playlist
+   - Videos are saved in a folder named after the playlist and numbered
+   - With the option disabled, a playlist URL downloads a single video
+
+4. Download History:
+   - Lists completed and failed downloads with date, quality and format
+   - The history can be cleared
+
+5. Logs:
    - View application logs
    - Clear logs
 
-4. Language:
-   - Switch between supported languages
+6. Language:
+   - Switch between English, Italian, Spanish, French and German
 
-5. Update:
+7. Update:
    - Check for application updates
+
+8. Sponsor:
+   - Support the project with PayPal or Monero (QR code)
         ''',
         'about_title': 'About',
         'about_content': '''
@@ -235,24 +247,36 @@ Thank you for your support!
 Aiuto Video Downloader
 
 1. Scarica Video:
-   - Inserisci uno o più URL video
-   - Premi Invio su una riga vuota per iniziare il download
+   - Aggiungi uno o più URL video (CLI: uno per riga, riga vuota per iniziare)
+   - Scegli la directory di download (predefinita: downloads)
    - Piattaforme supportate: YouTube, Vimeo e molte altre
 
-2. Impostazioni:
-   - Cambia lingua
-   - Imposta directory di download
-   - Scegli il formato video preferito
+2. Qualità e Formato:
+   - Qualità: migliore, peggiore, 1080p, 720p, 480p, 360p o solo audio
+   - Formato: auto mantiene il formato originale, oppure scegli
+     mp4, webm, mkv, avi, mp3, m4a, wav
 
-3. Log:
-   - Visualizza log dell\'applicazione
+3. Playlist:
+   - Attiva l'opzione playlist per scaricare tutti i video di una playlist
+   - I video vengono salvati in una cartella con il nome della playlist e numerati
+   - Con l'opzione disattivata, un URL di playlist scarica un solo video
+
+4. Cronologia Download:
+   - Elenca i download completati e falliti con data, qualità e formato
+   - La cronologia può essere cancellata
+
+5. Log:
+   - Visualizza log dell'applicazione
    - Cancella log
 
-4. Lingua:
-   - Cambia tra le lingue supportate
+6. Lingua:
+   - Cambia tra inglese, italiano, spagnolo, francese e tedesco
 
-5. Aggiornamenti:
-   - Controlla aggiornamenti dell\'applicazione
+7. Aggiornamenti:
+   - Controlla aggiornamenti dell'applicazione
+
+8. Sponsor:
+   - Supporta il progetto con PayPal o Monero (codice QR)
         ''',
         'about_title': 'Informazioni',
         'about_content': '''
@@ -406,24 +430,36 @@ Grazie per il tuo supporto!
 Ayuda de Video Downloader
 
 1. Descargar Videos:
-   - Ingrese uno o más URLs de videos
-   - Presione Enter en una línea vacía para comenzar la descarga
+   - Agregue uno o más URLs de videos (CLI: uno por línea, línea vacía para comenzar)
+   - Elija el directorio de descarga (predeterminado: downloads)
    - Plataformas soportadas: YouTube, Vimeo y muchas más
 
-2. Configuración:
-   - Cambiar idioma
-   - Establecer directorio de descarga
-   - Elegir formato de video preferido
+2. Calidad y Formato:
+   - Calidad: mejor, peor, 1080p, 720p, 480p, 360p o solo audio
+   - Formato: auto mantiene el formato original, o elija
+     mp4, webm, mkv, avi, mp3, m4a, wav
 
-3. Registros:
+3. Listas de reproducción:
+   - Active la opción de lista para descargar todos los videos de una lista
+   - Los videos se guardan en una carpeta con el nombre de la lista y numerados
+   - Con la opción desactivada, una URL de lista descarga un solo video
+
+4. Historial de Descargas:
+   - Muestra las descargas completadas y fallidas con fecha, calidad y formato
+   - El historial se puede borrar
+
+5. Registros:
    - Ver registros de la aplicación
    - Limpiar registros
 
-4. Idioma:
-   - Cambiar entre idiomas soportados
+6. Idioma:
+   - Cambiar entre inglés, italiano, español, francés y alemán
 
-5. Actualización:
+7. Actualización:
    - Buscar actualizaciones de la aplicación
+
+8. Patrocinador:
+   - Apoye el proyecto con PayPal o Monero (código QR)
         ''',
         'about_title': 'Acerca de',
         'about_content': '''
@@ -577,24 +613,36 @@ Monero: Ver el código QR en el diálogo de patrocinador
 Aide Video Downloader
 
 1. Télécharger Videos:
-   - Entrez un ou plusieurs URLs de vidéos
-   - Appuyez sur Entrée sur une ligne vide pour commencer le téléchargement
-   - Plateformes supportées: YouTube, Vimeo et bien d\'autres
+   - Ajoutez une ou plusieurs URLs de vidéos (CLI: une par ligne, ligne vide pour commencer)
+   - Choisissez le répertoire de téléchargement (par défaut: downloads)
+   - Plateformes supportées: YouTube, Vimeo et bien d'autres
 
-2. Paramètres:
-   - Changer de langue
-   - Définir le répertoire de téléchargement
-   - Choisir le format vidéo préféré
+2. Qualité et Format:
+   - Qualité: meilleure, pire, 1080p, 720p, 480p, 360p ou audio uniquement
+   - Format: auto garde le format original, ou choisissez
+     mp4, webm, mkv, avi, mp3, m4a, wav
 
-3. Journaux:
-   - Voir les journaux de l\'application
+3. Playlists:
+   - Activez l'option playlist pour télécharger toutes les vidéos d'une playlist
+   - Les vidéos sont enregistrées dans un dossier au nom de la playlist et numérotées
+   - Avec l'option désactivée, une URL de playlist télécharge une seule vidéo
+
+4. Historique des Téléchargements:
+   - Liste les téléchargements terminés et échoués avec date, qualité et format
+   - L'historique peut être effacé
+
+5. Journaux:
+   - Voir les journaux de l'application
    - Effacer les journaux
 
-4. Langue:
-   - Changer entre les langues supportées
+6. Langue:
+   - Changer entre anglais, italien, espagnol, français et allemand
 
-5. Mise à jour:
-   - Vérifier les mises à jour de l\'application
+7. Mise à jour:
+   - Vérifier les mises à jour de l'application
+
+8. Sponsor:
+   - Soutenez le projet avec PayPal ou Monero (code QR)
         ''',
         'about_title': 'À propos',
         'about_content': '''
@@ -748,24 +796,36 @@ Merci pour votre soutien!
 Video Downloader Hilfe
 
 1. Videos Herunterladen:
-   - Geben Sie eine oder mehrere Video-URLs ein
-   - Drücken Sie Enter auf einer leeren Zeile, um den Download zu starten
+   - Fügen Sie eine oder mehrere Video-URLs hinzu (CLI: eine pro Zeile, leere Zeile zum Starten)
+   - Wählen Sie das Download-Verzeichnis (Standard: downloads)
    - Unterstützte Plattformen: YouTube, Vimeo und viele mehr
 
-2. Einstellungen:
-   - Sprache ändern
-   - Download-Verzeichnis festlegen
-   - Bevorzugtes Video-Format wählen
+2. Qualität und Format:
+   - Qualität: beste, schlechteste, 1080p, 720p, 480p, 360p oder nur Audio
+   - Format: Auto behält das Originalformat bei, oder wählen Sie
+     mp4, webm, mkv, avi, mp3, m4a, wav
 
-3. Protokolle:
+3. Playlists:
+   - Aktivieren Sie die Playlist-Option, um alle Videos einer Playlist herunterzuladen
+   - Die Videos werden nummeriert in einem Ordner mit dem Namen der Playlist gespeichert
+   - Bei deaktivierter Option lädt eine Playlist-URL nur ein Video herunter
+
+4. Download-Verlauf:
+   - Zeigt abgeschlossene und fehlgeschlagene Downloads mit Datum, Qualität und Format
+   - Der Verlauf kann gelöscht werden
+
+5. Protokolle:
    - Anwendungsprotokolle anzeigen
    - Protokolle löschen
 
-4. Sprache:
-   - Zwischen unterstützten Sprachen wechseln
+6. Sprache:
+   - Zwischen Englisch, Italienisch, Spanisch, Französisch und Deutsch wechseln
 
-5. Update:
+7. Update:
    - Nach Anwendungs-Updates suchen
+
+8. Sponsor:
+   - Unterstützen Sie das Projekt mit PayPal oder Monero (QR-Code)
         ''',
         'about_title': 'Über',
         'about_content': '''
