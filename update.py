@@ -1,6 +1,6 @@
 """Update system for Video Downloader application.
 
-This module provides functionality to check for and install updates.
+This module provides functionality to check for updates and install them.
 """
 
 import json
