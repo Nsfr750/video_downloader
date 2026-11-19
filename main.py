@@ -311,10 +311,16 @@ def _run_cli() -> None:
 
 if __name__ == "__main__":
     try:
+        print("Starting Video Downloader...")
         main()
+        print("Application closed normally.")
     except KeyboardInterrupt:
         print("\n\nOperation cancelled by user.")
+        input("Press Enter to exit...")
         sys.exit(0)
     except Exception as e:
         print(f"\n{_('error')}: {e}")
+        import traceback
+        traceback.print_exc()
+        input("Press Enter to exit...")
         sys.exit(1)
