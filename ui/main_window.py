@@ -841,8 +841,37 @@ class MainWindow(QMainWindow):
         QMessageBox.about(self, _('about_title'), _('about_content').format(__version__))
 
     def _show_help(self) -> None:
-        """Show help dialog."""
-        QMessageBox.information(self, _('help_title'), _('help_content'))
+        """Show help dialog with help, usage guide and troubleshooting tabs."""
+        dialog = QDialog(self)
+        dialog.setWindowTitle(_('help_title'))
+        dialog.setMinimumSize(700, 550)
+
+        layout = QVBoxLayout()
+
+        tabs = QTabWidget()
+        pages = [
+            ('help_title', 'help_content'),
+            ('usage_title', 'usage_content'),
+            ('troubleshooting_title', 'troubleshooting_content'),
+        ]
+        for title_key, content_key in pages:
+            page = QTextEdit()
+            page.setReadOnly(True)
+            page.setPlainText(_(content_key).strip())
+            tabs.addTab(page, _(title_key))
+        layout.addWidget(tabs)
+
+        # Close button at bottom right
+        close_layout = QHBoxLayout()
+        close_layout.addStretch()
+        close_button = QPushButton(_('close'))
+        close_button.setStyleSheet("background-color: #dc3545; color: white;")
+        close_button.clicked.connect(dialog.accept)
+        close_layout.addWidget(close_button)
+        layout.addLayout(close_layout)
+
+        dialog.setLayout(layout)
+        dialog.exec()
 
     def closeEvent(self, event) -> None:
         """Handle close event.

@@ -21,6 +21,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - Download history: every downloaded or failed video is recorded in `data/download_history.json`
 - "Download History" menu in CLI and "Download History" tab in GUI, with clear function
 - Shared download core (`download_core.py`) used by both CLI and GUI
+- Usage guide and troubleshooting translated in all languages and available from the Help menu (CLI) and Help dialog (GUI)
 - Tests for quality/format selection, update check, sponsor QR code, playlists and download history
 
 ### Changed

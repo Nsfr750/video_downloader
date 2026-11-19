@@ -157,9 +157,23 @@ class Menu:
         print(f"{_('help_title')}")
         print(f"{'='*50}")
         print(_('help_content'))
-        print(f"{'='*50}\n")
 
-        input(_("press_enter_continue"))
+        from help import show_troubleshooting, show_usage_guide
+
+        while True:
+            print(f"{'='*50}")
+            print(f"1. {_('usage_title')}")
+            print(f"2. {_('troubleshooting_title')}")
+            print(f"3. {_('back')}")
+            print(f"{'='*50}")
+
+            choice = input(_("enter_your_choice")).strip()
+            if choice == "1":
+                show_usage_guide()
+            elif choice == "2":
+                show_troubleshooting()
+            else:
+                break
 
     def show_about(self) -> None:
         """Display about information."""

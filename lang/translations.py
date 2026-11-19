@@ -95,6 +95,115 @@ Video Downloader Help
 8. Sponsor:
    - Support the project with PayPal or Monero (QR code)
         ''',
+        'usage_title': 'Usage Guide',
+        'usage_content': '''
+1. Installation (Python 3.13 or higher):
+   py -3.13 -m pip install -r requirements.txt
+
+2. Running the application:
+   py -3.13 main.py          (GUI mode, default)
+   py -3.13 main.py --cli    (CLI mode)
+
+3. Downloading videos:
+   - Select 'Download Videos' from the main menu
+   - Choose the quality: best, worst, 1080p, 720p, 480p, 360p or audio only
+   - Choose the output format: auto (keep original), mp4, webm, mkv, avi,
+     mp3, m4a or wav
+   - Choose whether playlists must be downloaded entirely
+   - Enter one or more video URLs (one per line)
+   - Press Enter on an empty line to start downloading
+   - Videos will be saved to the 'downloads' folder
+
+4. Playlists:
+   - With the playlist option enabled, every video of a playlist URL is
+     downloaded into a folder named after the playlist, with numbered files
+   - A video that cannot be downloaded does not stop the rest of the playlist
+   - With the option disabled, a playlist URL downloads a single video
+
+5. Download history:
+   - Every downloaded or failed video is recorded in
+     'data/download_history.json'
+   - View the history from the main menu (CLI) or the history tab (GUI)
+   - The history can be cleared from the same place
+
+6. Supported platforms:
+   - YouTube
+   - Vimeo
+   - Dailymotion
+   - Twitch
+   - Facebook
+   - Instagram
+   - Twitter/X
+   - TikTok
+   - Reddit
+   - SoundCloud
+   - And many more...
+
+7. Language support:
+   - English
+   - Italian
+   - Spanish
+   - French
+   - German
+
+8. Logging:
+   - All activities are logged to the 'logs' folder
+   - View logs from the main menu
+   - Logs are organized by date
+
+9. Updates:
+   - Check for updates from the main menu
+   - Updates are checked against the latest release on GitHub
+
+10. Sponsor:
+   - Support the project with PayPal or Monero
+   - The GUI shows a QR code for the Monero address
+        ''',
+        'troubleshooting_title': 'Troubleshooting',
+        'troubleshooting_content': '''
+Common Issues and Solutions:
+
+1. Download fails:
+   - Check your internet connection
+   - Verify the URL is correct
+   - Some videos may be region-locked or private
+   - Try updating yt-dlp: py -3.13 -m pip install --upgrade yt-dlp
+   - The reason of each failure is shown in the download history
+
+2. YouTube: "Requested format is not available":
+   - yt-dlp needs a JavaScript runtime (Deno) to read all YouTube formats
+   - Install Deno, or try another quality
+
+3. Only one video of a playlist is downloaded:
+   - Enable the playlist option before starting the download
+
+4. Slow download speed:
+   - Download speed depends on your internet connection
+   - Some platforms limit download speeds
+   - Try downloading during off-peak hours
+
+5. Logs not appearing:
+   - Check that the 'logs' folder exists
+   - Ensure you have write permissions
+   - Check the log level in logger.py
+
+6. Download history is empty after an error:
+   - An unreadable history file is renamed to 'download_history.json.bak'
+     and a new history is started
+
+7. Monero QR code not shown:
+   - The QR code needs the qrcode package and ImageMagick (used by Wand)
+   - Without them the Monero address is shown as text
+
+8. Permission errors:
+   - Ensure you have write permissions for the download directory
+   - Try running as administrator (Windows) or with sudo (Linux/Mac)
+
+For more help:
+- Email: nsfr750@yandex.com
+- Website: https://www.tuxxle.org
+- GitHub: https://github.com/Nsfr750
+        ''',
         'about_title': 'About',
         'about_content': '''
 Video Downloader v{}
@@ -277,6 +386,117 @@ Aiuto Video Downloader
 
 8. Sponsor:
    - Supporta il progetto con PayPal o Monero (codice QR)
+        ''',
+        'usage_title': "Guida all'Uso",
+        'usage_content': '''
+1. Installazione (Python 3.13 o superiore):
+   py -3.13 -m pip install -r requirements.txt
+
+2. Avvio dell'applicazione:
+   py -3.13 main.py          (modalità GUI, predefinita)
+   py -3.13 main.py --cli    (modalità CLI)
+
+3. Scaricare video:
+   - Seleziona 'Scarica Video' dal menu principale
+   - Scegli la qualità: migliore, peggiore, 1080p, 720p, 480p, 360p o solo audio
+   - Scegli il formato di output: auto (mantieni originale), mp4, webm, mkv, avi,
+     mp3, m4a o wav
+   - Scegli se scaricare le playlist intere
+   - Inserisci uno o più URL video (uno per riga)
+   - Premi Invio su una riga vuota per iniziare il download
+   - I video vengono salvati nella cartella 'downloads'
+
+4. Playlist:
+   - Con l'opzione playlist attiva, tutti i video di un URL di playlist vengono
+     scaricati in una cartella con il nome della playlist, con file numerati
+   - Un video che non può essere scaricato non blocca il resto della playlist
+   - Con l'opzione disattivata, un URL di playlist scarica un solo video
+
+5. Cronologia download:
+   - Ogni video scaricato o fallito viene registrato in
+     'data/download_history.json'
+   - Visualizza la cronologia dal menu principale (CLI) o dalla scheda
+     cronologia (GUI)
+   - La cronologia può essere cancellata dallo stesso punto
+
+6. Piattaforme supportate:
+   - YouTube
+   - Vimeo
+   - Dailymotion
+   - Twitch
+   - Facebook
+   - Instagram
+   - Twitter/X
+   - TikTok
+   - Reddit
+   - SoundCloud
+   - E molte altre...
+
+7. Lingue supportate:
+   - Inglese
+   - Italiano
+   - Spagnolo
+   - Francese
+   - Tedesco
+
+8. Log:
+   - Tutte le attività vengono registrate nella cartella 'logs'
+   - Visualizza i log dal menu principale
+   - I log sono organizzati per data
+
+9. Aggiornamenti:
+   - Controlla gli aggiornamenti dal menu principale
+   - Il controllo viene fatto sull'ultima release su GitHub
+
+10. Sponsor:
+   - Supporta il progetto con PayPal o Monero
+   - La GUI mostra un codice QR per l'indirizzo Monero
+        ''',
+        'troubleshooting_title': 'Risoluzione dei Problemi',
+        'troubleshooting_content': '''
+Problemi comuni e soluzioni:
+
+1. Il download fallisce:
+   - Controlla la connessione a internet
+   - Verifica che l'URL sia corretto
+   - Alcuni video possono essere privati o bloccati in alcune regioni
+   - Prova ad aggiornare yt-dlp: py -3.13 -m pip install --upgrade yt-dlp
+   - Il motivo di ogni errore è indicato nella cronologia download
+
+2. YouTube: "Requested format is not available":
+   - yt-dlp ha bisogno di un runtime JavaScript (Deno) per leggere tutti i
+     formati di YouTube
+   - Installa Deno, oppure prova un'altra qualità
+
+3. Viene scaricato un solo video di una playlist:
+   - Attiva l'opzione playlist prima di avviare il download
+
+4. Download lento:
+   - La velocità dipende dalla connessione a internet
+   - Alcune piattaforme limitano la velocità di download
+   - Prova a scaricare in orari meno affollati
+
+5. I log non compaiono:
+   - Controlla che la cartella 'logs' esista
+   - Assicurati di avere i permessi di scrittura
+   - Controlla il livello di log in logger.py
+
+6. La cronologia download è vuota dopo un errore:
+   - Un file di cronologia illeggibile viene rinominato in
+     'download_history.json.bak' e viene creata una nuova cronologia
+
+7. Il codice QR Monero non viene mostrato:
+   - Il codice QR richiede il pacchetto qrcode e ImageMagick (usato da Wand)
+   - Senza di essi l'indirizzo Monero viene mostrato come testo
+
+8. Errori di permessi:
+   - Assicurati di avere i permessi di scrittura nella directory di download
+   - Prova a eseguire come amministratore (Windows) o con sudo (Linux/Mac)
+
+Per ulteriore aiuto:
+- Email: nsfr750@yandex.com
+- Sito web: https://www.tuxxle.org
+- GitHub: https://github.com/Nsfr750
         ''',
         'about_title': 'Informazioni',
         'about_content': '''
@@ -461,6 +681,117 @@ Ayuda de Video Downloader
 8. Patrocinador:
    - Apoye el proyecto con PayPal o Monero (código QR)
         ''',
+        'usage_title': 'Guía de Uso',
+        'usage_content': '''
+1. Instalación (Python 3.13 o superior):
+   py -3.13 -m pip install -r requirements.txt
+
+2. Ejecutar la aplicación:
+   py -3.13 main.py          (modo GUI, predeterminado)
+   py -3.13 main.py --cli    (modo CLI)
+
+3. Descargar videos:
+   - Seleccione 'Descargar Videos' en el menú principal
+   - Elija la calidad: mejor, peor, 1080p, 720p, 480p, 360p o solo audio
+   - Elija el formato de salida: auto (mantener original), mp4, webm, mkv, avi,
+     mp3, m4a o wav
+   - Elija si las listas de reproducción se descargan completas
+   - Ingrese uno o más URLs de videos (uno por línea)
+   - Presione Enter en una línea vacía para comenzar la descarga
+   - Los videos se guardan en la carpeta 'downloads'
+
+4. Listas de reproducción:
+   - Con la opción de lista activada, todos los videos de una URL de lista se
+     descargan en una carpeta con el nombre de la lista, con archivos numerados
+   - Un video que no se puede descargar no detiene el resto de la lista
+   - Con la opción desactivada, una URL de lista descarga un solo video
+
+5. Historial de descargas:
+   - Cada video descargado o fallido se registra en
+     'data/download_history.json'
+   - Vea el historial desde el menú principal (CLI) o la pestaña de
+     historial (GUI)
+   - El historial se puede borrar desde el mismo lugar
+
+6. Plataformas soportadas:
+   - YouTube
+   - Vimeo
+   - Dailymotion
+   - Twitch
+   - Facebook
+   - Instagram
+   - Twitter/X
+   - TikTok
+   - Reddit
+   - SoundCloud
+   - Y muchas más...
+
+7. Idiomas soportados:
+   - Inglés
+   - Italiano
+   - Español
+   - Francés
+   - Alemán
+
+8. Registros:
+   - Todas las actividades se registran en la carpeta 'logs'
+   - Vea los registros desde el menú principal
+   - Los registros se organizan por fecha
+
+9. Actualizaciones:
+   - Busque actualizaciones desde el menú principal
+   - Se comprueba la última versión publicada en GitHub
+
+10. Patrocinador:
+   - Apoye el proyecto con PayPal o Monero
+   - La GUI muestra un código QR con la dirección Monero
+        ''',
+        'troubleshooting_title': 'Solución de Problemas',
+        'troubleshooting_content': '''
+Problemas comunes y soluciones:
+
+1. La descarga falla:
+   - Compruebe su conexión a internet
+   - Verifique que la URL sea correcta
+   - Algunos videos pueden ser privados o estar bloqueados por región
+   - Pruebe a actualizar yt-dlp: py -3.13 -m pip install --upgrade yt-dlp
+   - El motivo de cada fallo se muestra en el historial de descargas
+
+2. YouTube: "Requested format is not available":
+   - yt-dlp necesita un runtime de JavaScript (Deno) para leer todos los
+     formatos de YouTube
+   - Instale Deno, o pruebe otra calidad
+
+3. Solo se descarga un video de una lista de reproducción:
+   - Active la opción de lista antes de iniciar la descarga
+
+4. Descarga lenta:
+   - La velocidad depende de su conexión a internet
+   - Algunas plataformas limitan la velocidad de descarga
+   - Pruebe a descargar en horas de menor tráfico
+
+5. Los registros no aparecen:
+   - Compruebe que la carpeta 'logs' exista
+   - Asegúrese de tener permisos de escritura
+   - Compruebe el nivel de registro en logger.py
+
+6. El historial de descargas está vacío después de un error:
+   - Un archivo de historial ilegible se renombra a
+     'download_history.json.bak' y se inicia un historial nuevo
+
+7. No se muestra el código QR de Monero:
+   - El código QR necesita el paquete qrcode e ImageMagick (usado por Wand)
+   - Sin ellos la dirección Monero se muestra como texto
+
+8. Errores de permisos:
+   - Asegúrese de tener permisos de escritura en el directorio de descarga
+   - Pruebe a ejecutar como administrador (Windows) o con sudo (Linux/Mac)
+
+Para más ayuda:
+- Email: nsfr750@yandex.com
+- Sitio web: https://www.tuxxle.org
+- GitHub: https://github.com/Nsfr750
+        ''',
         'about_title': 'Acerca de',
         'about_content': '''
 Video Downloader v{}
@@ -644,6 +975,123 @@ Aide Video Downloader
 8. Sponsor:
    - Soutenez le projet avec PayPal ou Monero (code QR)
         ''',
+        'usage_title': "Guide d'Utilisation",
+        'usage_content': '''
+1. Installation (Python 3.13 ou supérieur):
+   py -3.13 -m pip install -r requirements.txt
+
+2. Lancer l'application:
+   py -3.13 main.py          (mode GUI, par défaut)
+   py -3.13 main.py --cli    (mode CLI)
+
+3. Télécharger des vidéos:
+   - Sélectionnez 'Télécharger Videos' dans le menu principal
+   - Choisissez la qualité: meilleure, pire, 1080p, 720p, 480p, 360p ou
+     audio uniquement
+   - Choisissez le format de sortie: auto (garder l'original), mp4, webm, mkv,
+     avi, mp3, m4a ou wav
+   - Choisissez si les playlists doivent être téléchargées en entier
+   - Entrez une ou plusieurs URLs de vidéos (une par ligne)
+   - Appuyez sur Entrée sur une ligne vide pour commencer le téléchargement
+   - Les vidéos sont enregistrées dans le dossier 'downloads'
+
+4. Playlists:
+   - Avec l'option playlist activée, toutes les vidéos d'une URL de playlist
+     sont téléchargées dans un dossier au nom de la playlist, avec des
+     fichiers numérotés
+   - Une vidéo qui ne peut pas être téléchargée n'arrête pas le reste de
+     la playlist
+   - Avec l'option désactivée, une URL de playlist télécharge une seule vidéo
+
+5. Historique des téléchargements:
+   - Chaque vidéo téléchargée ou échouée est enregistrée dans
+     'data/download_history.json'
+   - Consultez l'historique depuis le menu principal (CLI) ou l'onglet
+     historique (GUI)
+   - L'historique peut être effacé au même endroit
+
+6. Plateformes supportées:
+   - YouTube
+   - Vimeo
+   - Dailymotion
+   - Twitch
+   - Facebook
+   - Instagram
+   - Twitter/X
+   - TikTok
+   - Reddit
+   - SoundCloud
+   - Et bien d'autres...
+
+7. Langues supportées:
+   - Anglais
+   - Italien
+   - Espagnol
+   - Français
+   - Allemand
+
+8. Journaux:
+   - Toutes les activités sont enregistrées dans le dossier 'logs'
+   - Consultez les journaux depuis le menu principal
+   - Les journaux sont organisés par date
+
+9. Mises à jour:
+   - Vérifiez les mises à jour depuis le menu principal
+   - La vérification porte sur la dernière version publiée sur GitHub
+
+10. Sponsor:
+   - Soutenez le projet avec PayPal ou Monero
+   - La GUI affiche un code QR pour l'adresse Monero
+        ''',
+        'troubleshooting_title': 'Dépannage',
+        'troubleshooting_content': '''
+Problèmes courants et solutions:
+
+1. Le téléchargement échoue:
+   - Vérifiez votre connexion internet
+   - Vérifiez que l'URL est correcte
+   - Certaines vidéos peuvent être privées ou bloquées selon la région
+   - Essayez de mettre à jour yt-dlp: py -3.13 -m pip install --upgrade yt-dlp
+   - La raison de chaque échec est indiquée dans l'historique des
+     téléchargements
+
+2. YouTube: "Requested format is not available":
+   - yt-dlp a besoin d'un runtime JavaScript (Deno) pour lire tous les
+     formats de YouTube
+   - Installez Deno, ou essayez une autre qualité
+
+3. Une seule vidéo d'une playlist est téléchargée:
+   - Activez l'option playlist avant de lancer le téléchargement
+
+4. Téléchargement lent:
+   - La vitesse dépend de votre connexion internet
+   - Certaines plateformes limitent la vitesse de téléchargement
+   - Essayez de télécharger aux heures creuses
+
+5. Les journaux n'apparaissent pas:
+   - Vérifiez que le dossier 'logs' existe
+   - Assurez-vous d'avoir les droits d'écriture
+   - Vérifiez le niveau de journalisation dans logger.py
+
+6. L'historique des téléchargements est vide après une erreur:
+   - Un fichier d'historique illisible est renommé en
+     'download_history.json.bak' et un nouvel historique est créé
+
+7. Le code QR Monero n'est pas affiché:
+   - Le code QR nécessite le paquet qrcode et ImageMagick (utilisé par Wand)
+   - Sans eux, l'adresse Monero est affichée en texte
+
+8. Erreurs de permissions:
+   - Assurez-vous d'avoir les droits d'écriture dans le répertoire de
+     téléchargement
+   - Essayez d'exécuter en tant qu'administrateur (Windows) ou avec sudo
+     (Linux/Mac)
+
+Pour plus d'aide:
+- Email: nsfr750@yandex.com
+- Site web: https://www.tuxxle.org
+- GitHub: https://github.com/Nsfr750
+        ''',
         'about_title': 'À propos',
         'about_content': '''
 Video Downloader v{}
@@ -826,6 +1274,119 @@ Video Downloader Hilfe
 
 8. Sponsor:
    - Unterstützen Sie das Projekt mit PayPal oder Monero (QR-Code)
+        ''',
+        'usage_title': 'Bedienungsanleitung',
+        'usage_content': '''
+1. Installation (Python 3.13 oder höher):
+   py -3.13 -m pip install -r requirements.txt
+
+2. Anwendung starten:
+   py -3.13 main.py          (GUI-Modus, Standard)
+   py -3.13 main.py --cli    (CLI-Modus)
+
+3. Videos herunterladen:
+   - Wählen Sie 'Videos Herunterladen' im Hauptmenü
+   - Wählen Sie die Qualität: beste, schlechteste, 1080p, 720p, 480p, 360p
+     oder nur Audio
+   - Wählen Sie das Ausgabeformat: Auto (Original beibehalten), mp4, webm,
+     mkv, avi, mp3, m4a oder wav
+   - Wählen Sie, ob Playlists vollständig heruntergeladen werden sollen
+   - Geben Sie eine oder mehrere Video-URLs ein (eine pro Zeile)
+   - Drücken Sie Enter auf einer leeren Zeile, um den Download zu starten
+   - Die Videos werden im Ordner 'downloads' gespeichert
+
+4. Playlists:
+   - Bei aktivierter Playlist-Option werden alle Videos einer Playlist-URL
+     nummeriert in einen Ordner mit dem Namen der Playlist heruntergeladen
+   - Ein Video, das nicht heruntergeladen werden kann, stoppt den Rest der
+     Playlist nicht
+   - Bei deaktivierter Option lädt eine Playlist-URL nur ein Video herunter
+
+5. Download-Verlauf:
+   - Jedes heruntergeladene oder fehlgeschlagene Video wird in
+     'data/download_history.json' gespeichert
+   - Den Verlauf zeigen Sie im Hauptmenü (CLI) oder im Verlauf-Tab (GUI) an
+   - Der Verlauf kann an derselben Stelle gelöscht werden
+
+6. Unterstützte Plattformen:
+   - YouTube
+   - Vimeo
+   - Dailymotion
+   - Twitch
+   - Facebook
+   - Instagram
+   - Twitter/X
+   - TikTok
+   - Reddit
+   - SoundCloud
+   - Und viele mehr...
+
+7. Unterstützte Sprachen:
+   - Englisch
+   - Italienisch
+   - Spanisch
+   - Französisch
+   - Deutsch
+
+8. Protokolle:
+   - Alle Aktivitäten werden im Ordner 'logs' protokolliert
+   - Protokolle zeigen Sie im Hauptmenü an
+   - Die Protokolle sind nach Datum geordnet
+
+9. Updates:
+   - Suchen Sie im Hauptmenü nach Updates
+   - Geprüft wird die neueste Version auf GitHub
+
+10. Sponsor:
+   - Unterstützen Sie das Projekt mit PayPal oder Monero
+   - Die GUI zeigt einen QR-Code für die Monero-Adresse
+        ''',
+        'troubleshooting_title': 'Fehlerbehebung',
+        'troubleshooting_content': '''
+Häufige Probleme und Lösungen:
+
+1. Der Download schlägt fehl:
+   - Prüfen Sie Ihre Internetverbindung
+   - Prüfen Sie, ob die URL korrekt ist
+   - Manche Videos sind privat oder regional gesperrt
+   - Aktualisieren Sie yt-dlp: py -3.13 -m pip install --upgrade yt-dlp
+   - Der Grund jedes Fehlers steht im Download-Verlauf
+
+2. YouTube: "Requested format is not available":
+   - yt-dlp benötigt eine JavaScript-Laufzeit (Deno), um alle
+     YouTube-Formate zu lesen
+   - Installieren Sie Deno oder versuchen Sie eine andere Qualität
+
+3. Nur ein Video einer Playlist wird heruntergeladen:
+   - Aktivieren Sie die Playlist-Option, bevor Sie den Download starten
+
+4. Langsamer Download:
+   - Die Geschwindigkeit hängt von Ihrer Internetverbindung ab
+   - Manche Plattformen begrenzen die Download-Geschwindigkeit
+   - Versuchen Sie es außerhalb der Stoßzeiten
+
+5. Protokolle erscheinen nicht:
+   - Prüfen Sie, ob der Ordner 'logs' existiert
+   - Stellen Sie sicher, dass Sie Schreibrechte haben
+   - Prüfen Sie die Protokollstufe in logger.py
+
+6. Der Download-Verlauf ist nach einem Fehler leer:
+   - Eine unlesbare Verlaufsdatei wird in 'download_history.json.bak'
+     umbenannt und ein neuer Verlauf wird begonnen
+
+7. Der Monero-QR-Code wird nicht angezeigt:
+   - Der QR-Code benötigt das Paket qrcode und ImageMagick (von Wand genutzt)
+   - Ohne sie wird die Monero-Adresse als Text angezeigt
+
+8. Berechtigungsfehler:
+   - Stellen Sie sicher, dass Sie Schreibrechte im Download-Verzeichnis haben
+   - Führen Sie die Anwendung als Administrator (Windows) oder mit sudo
+     (Linux/Mac) aus
+
+Weitere Hilfe:
+- Email: nsfr750@yandex.com
+- Website: https://www.tuxxle.org
+- GitHub: https://github.com/Nsfr750
         ''',
         'about_title': 'Über',
         'about_content': '''
