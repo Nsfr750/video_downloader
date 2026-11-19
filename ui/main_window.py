@@ -621,7 +621,11 @@ class MainWindow(QMainWindow):
 
     def _show_sponsor(self) -> None:
         """Show sponsor information dialog with QR code."""
-        from sponsor import generate_monero_qrcode
+        try:
+            from sponsor import generate_monero_qrcode, MONERO_ADDRESS, QR_AVAILABLE
+        except ImportError:
+            QR_AVAILABLE = False
+            MONERO_ADDRESS = "47Jc6MC47WJVFhiQFYwHyBNQP5BEsjUPG6tc8R37FwcTY8K5Y3LvFzveSXoGiaDQSxDrnCUBJ5WBj6Fgmsfix8VPD4w3gXF"
 
         dialog = QDialog(self)
         dialog.setWindowTitle(_('sponsor_title'))
@@ -645,19 +649,32 @@ class MainWindow(QMainWindow):
         monero_label.setStyleSheet("font-weight: bold;")
         layout.addWidget(monero_label)
 
-        # Generate and display QR code
-        try:
-            qr_path = generate_monero_qrcode()
-            qr_pixmap = QPixmap(qr_path)
-            if not qr_pixmap.isNull():
-                qr_label = QLabel()
-                qr_label.setPixmap(qr_pixmap.scaled(300, 300, Qt.KeepAspectRatio, Qt.SmoothTransformation))
-                qr_label.setAlignment(Qt.AlignCenter)
-                layout.addWidget(qr_label)
-            else:
-                layout.addWidget(QLabel(_('qr_error_load')))
-        except Exception as e:
-            layout.addWidget(QLabel(_('qr_error_generate').format(error=str(e))))
+        # Generate and display QR code if available
+        if QR_AVAILABLE:
+            try:
+                qr_path = generate_monero_qrcode()
+                if qr_path:
+                    qr_pixmap = QPixmap(qr_path)
+                    if not qr_pixmap.isNull():
+                        qr_label = QLabel()
+                        qr_label.setPixmap(qr_pixmap.scaled(300, 300, Qt.KeepAspectRatio, Qt.SmoothTransformation))
+                        qr_label.setAlignment(Qt.AlignCenter)
+                        layout.addWidget(qr_label)
+                    else:
+                        layout.addWidget(QLabel(_('qr_error_load')))
+                else:
+                    layout.addWidget(QLabel(_('qr_error_load')))
+            except Exception as e:
+                layout.addWidget(QLabel(_('qr_error_generate').format(error=str(e))))
+        else:
+            # Show text address if QR code is not available
+            address_label = QLabel(MONERO_ADDRESS)
+            address_label.setWordWrap(True)
+            address_label.setStyleSheet("font-family: monospace; font-size: 10pt;")
+            layout.addWidget(address_label)
+            info_label = QLabel(_('qr_unavailable'))
+            info_label.setStyleSheet("color: gray;")
+            layout.addWidget(info_label)
 
         # Close button
         close_button = QPushButton(_('close'))

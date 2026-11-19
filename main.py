@@ -309,18 +309,22 @@ def _run_cli() -> None:
     show_main_menu()
 
 
+def _wait_for_enter() -> None:
+    """Keep the console open until Enter is pressed, if a console is attached."""
+    if sys.stdin is not None and sys.stdin.isatty():
+        input(_('press_enter_continue'))
+
+
 if __name__ == "__main__":
     try:
-        print("Starting Video Downloader...")
         main()
-        print("Application closed normally.")
     except KeyboardInterrupt:
         print("\n\nOperation cancelled by user.")
-        input("Press Enter to exit...")
         sys.exit(0)
     except Exception as e:
         print(f"\n{_('error')}: {e}")
         import traceback
         traceback.print_exc()
-        input("Press Enter to exit...")
+        get_logger().error(traceback.format_exc())
+        _wait_for_enter()
         sys.exit(1)

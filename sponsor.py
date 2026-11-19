@@ -4,32 +4,56 @@ This module provides information about how to support the project.
 """
 
 import os
+import tempfile
+from typing import Optional
 from lang import _
-from wand.image import Image
-import qrcode
+
+try:
+    import qrcode
+    from wand.color import Color
+    from wand.drawing import Drawing
+    from wand.image import Image
+    QR_AVAILABLE = True
+except ImportError:
+    QR_AVAILABLE = False
 
 
 MONERO_ADDRESS = "47Jc6MC47WJVFhiQFYwHyBNQP5BEsjUPG6tc8R37FwcTY8K5Y3LvFzveSXoGiaDQSxDrnCUBJ5WBj6Fgmsfix8VPD4w3gXF"
+QR_BOX_SIZE = 10
 
 
-def generate_monero_qrcode() -> str:
+def generate_monero_qrcode() -> Optional[str]:
     """Generate QR code for Monero address.
 
+    The QR matrix is computed by qrcode and rendered with Wand.
+
     Returns:
-        Path to the generated QR code image
+        Path to the generated QR code image, or None if qrcode/Wand is not available
     """
+    if not QR_AVAILABLE:
+        return None
+
     qr = qrcode.QRCode(
-        version=1,
         error_correction=qrcode.constants.ERROR_CORRECT_L,
-        box_size=10,
         border=4,
     )
     qr.add_data(MONERO_ADDRESS)
     qr.make(fit=True)
+    matrix = qr.get_matrix()
+    size = len(matrix)
 
-    img = qr.make_image(fill_color="black", back_color="white")
-    qr_path = os.path.join(os.path.dirname(__file__), "monero_qrcode.png")
-    img.save(qr_path)
+    qr_path = os.path.join(tempfile.gettempdir(), "monero_qrcode.png")
+    with Image(width=size, height=size, background=Color("white")) as img:
+        with Drawing() as draw:
+            draw.fill_color = Color("black")
+            for y, row in enumerate(matrix):
+                for x, dark in enumerate(row):
+                    if dark:
+                        draw.point(x, y)
+            draw(img)
+        img.sample(size * QR_BOX_SIZE, size * QR_BOX_SIZE)
+        img.format = "png"
+        img.save(filename=qr_path)
 
     return qr_path
 
@@ -59,27 +83,31 @@ PayPal:
 Monero (XMR):
     """)
 
-    # Generate and display QR code
-    try:
-        qr_path = generate_monero_qrcode()
-        print(f"QR Code saved to: {qr_path}")
-        print("Scan the QR code below to donate Monero:")
+    # Generate and display QR code if available
+    if QR_AVAILABLE:
+        try:
+            qr_path = generate_monero_qrcode()
+            print(f"QR Code saved to: {qr_path}")
+            print("Scan the QR code below to donate Monero:")
 
-        # Open the QR code image with default image viewer
-        if os.name == 'nt':  # Windows
-            os.startfile(qr_path)
-        elif os.name == 'posix':  # Linux/Mac
-            import subprocess
-            if 'darwin' in os.uname().sysname.lower():  # macOS
-                subprocess.run(['open', qr_path])
-            else:  # Linux
-                subprocess.run(['xdg-open', qr_path])
+            # Open the QR code image with default image viewer
+            if os.name == 'nt':  # Windows
+                os.startfile(qr_path)
+            elif os.name == 'posix':  # Linux/Mac
+                import subprocess
+                if 'darwin' in os.uname().sysname.lower():  # macOS
+                    subprocess.run(['open', qr_path])
+                else:  # Linux
+                    subprocess.run(['xdg-open', qr_path])
 
-        print("\nPrivacy-focused cryptocurrency")
-        print("No transaction fees for the developer")
-    except Exception as e:
-        print(f"Error generating QR code: {e}")
+            print("\nPrivacy-focused cryptocurrency")
+            print("No transaction fees for the developer")
+        except Exception as e:
+            print(f"Error generating QR code: {e}")
+            print(f"Monero Address: {MONERO_ADDRESS}")
+    else:
         print(f"Monero Address: {MONERO_ADDRESS}")
+        print("(QR code generation not available - qrcode module not installed)")
 
     print("""
 Why donate?
