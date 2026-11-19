@@ -160,8 +160,6 @@ class MainWindow(QMainWindow):
         palette.setColor(QPalette.Link, QColor(42, 130, 218))
         palette.setColor(QPalette.Highlight, QColor(42, 130, 218))
         palette.setColor(QPalette.HighlightedText, Qt.black)
-        palette.setColor(QPalette.GroupButtonBackground, QColor(53, 53, 53))
-        palette.setColor(QPalette.GroupButton, QColor(53, 53, 53))
 
         app.setPalette(palette)
 
