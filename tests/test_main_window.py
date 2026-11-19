@@ -40,6 +40,7 @@ def window(app):
     window._update_language()
     yield window
     window.lang_manager.set_language(previous)
+    window.download_thread = None  # avoid the "download running" prompt on close
     window.close()
 
 
