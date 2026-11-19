@@ -24,38 +24,38 @@ class TestMenu:
         assert menu.logger is not None
         assert menu.lang_manager is not None
 
-    @patch('builtins.input', side_effect=['7'])  # Exit option
+    @patch('builtins.input', side_effect=['8'])  # Exit option
     def test_show_main_menu_exit(self, mock_input, menu):
         """Test main menu with exit option."""
         menu.show_main_menu()
         mock_input.assert_called()
 
-    @patch('builtins.input', side_effect=['1', '', '', '', '7'])  # Download, default quality, default format, empty URL, exit
+    @patch('builtins.input', side_effect=['1', '', '', '', '', '8'])  # Download, default quality, default format, no playlist, empty URL, exit
     def test_download_menu_empty_urls(self, mock_input, menu):
         """Test download menu with empty URLs."""
         menu.show_main_menu()
 
-    @patch('builtins.input', side_effect=['3', '1', '7'])  # Language, English, exit
+    @patch('builtins.input', side_effect=['3', '1', '8'])  # Language, English, exit
     def test_language_menu_select_english(self, mock_input, menu):
         """Test language menu selecting English."""
         menu.show_main_menu()
 
-    @patch('builtins.input', side_effect=['4', '', '7'])  # Help, press enter, exit
+    @patch('builtins.input', side_effect=['4', '', '8'])  # Help, press enter, exit
     def test_show_help(self, mock_input, menu):
         """Test showing help."""
         menu.show_main_menu()
 
-    @patch('builtins.input', side_effect=['5', '', '7'])  # About, press enter, exit
+    @patch('builtins.input', side_effect=['5', '', '8'])  # About, press enter, exit
     def test_show_about(self, mock_input, menu):
         """Test showing about."""
         menu.show_main_menu()
 
-    @patch('builtins.input', side_effect=['6', '', '7'])  # Update, press enter, exit
+    @patch('builtins.input', side_effect=['6', '', '8'])  # Update, press enter, exit
     def test_check_updates(self, mock_input, menu):
         """Test checking for updates."""
         menu.show_main_menu()
 
-    @patch('builtins.input', side_effect=['2', '4', '7'])  # View logs, back, exit
+    @patch('builtins.input', side_effect=['2', '4', '8'])  # View logs, back, exit
     def test_view_logs_menu(self, mock_input, menu):
         """Test viewing logs menu."""
         menu.show_main_menu()

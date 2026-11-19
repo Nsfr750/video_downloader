@@ -9,6 +9,8 @@ A Python application for downloading videos from the internet using yt-dlp.
 - Multi-language support (English, Italian, Spanish, French, German)
 - Quality selection (best, worst, 1080p, 720p, 480p, 360p, audio)
 - Format conversion (auto, mp4, webm, mkv, avi, mp3, m4a, wav)
+- Playlist support (optional download of entire playlists)
+- Download history (CLI menu and GUI tab)
 - Logging system
 - Easy-to-use interface
 - Graphical User Interface (GUI) with PySide6

@@ -9,6 +9,13 @@ import sys
 import argparse
 from typing import List, Optional
 import yt_dlp
+from download_core import (
+    FORMAT_OPTIONS,
+    QUALITY_OPTIONS,
+    build_ydl_options,
+    download_url,
+)
+from history import HistoryEntry
 from logger import get_logger
 from lang import get_language_manager, _
 from version import __version__
@@ -16,43 +23,49 @@ from version import __version__
 COPYRIGHT = "© Copyright 2024-2026 Tuxxle - All rights reserved."
 
 
+def is_yes(answer: str) -> bool:
+    """Tell whether a typed answer means "yes" in English or the current language.
+
+    Args:
+        answer: Text typed by the user
+
+    Returns:
+        True if the answer starts with "y" or with the first letter of the
+        translated "yes", False otherwise (including an empty answer)
+    """
+    answer = answer.strip().casefold()
+    return bool(answer) and answer[0] in {'y', _('yes').casefold()[0]}
+
+
 class VideoDownloader:
     """Main video downloader class."""
 
     # Quality options mapping
-    QUALITY_OPTIONS = {
-        'best': 'best',
-        'worst': 'worst',
-        '1080p': 'bestvideo[height<=1080]+bestaudio/best[height<=1080]',
-        '720p': 'bestvideo[height<=720]+bestaudio/best[height<=720]',
-        '480p': 'bestvideo[height<=480]+bestaudio/best[height<=480]',
-        '360p': 'bestvideo[height<=360]+bestaudio/best[height<=360]',
-        'audio': 'bestaudio/best',
-    }
+    QUALITY_OPTIONS = QUALITY_OPTIONS
 
     # Format options mapping
-    FORMAT_OPTIONS = {
-        'auto': None,  # Keep original format
-        'mp4': 'mp4',
-        'webm': 'webm',
-        'mkv': 'mkv',
-        'avi': 'avi',
-        'mp3': 'mp3',  # Audio only
-        'm4a': 'm4a',  # Audio only
-        'wav': 'wav',  # Audio only
-    }
+    FORMAT_OPTIONS = FORMAT_OPTIONS
 
-    def __init__(self, download_dir: str = "downloads", quality: str = "best", format: str = "auto"):
+    def __init__(
+        self,
+        download_dir: str = "downloads",
+        quality: str = "best",
+        format: str = "auto",
+        playlist: bool = False,
+    ):
         """Initialize the video downloader.
 
         Args:
             download_dir: Directory to save downloaded videos
             quality: Video quality (best, worst, 1080p, 720p, 480p, 360p, audio)
             format: Output format (auto, mp4, webm, mkv, avi, mp3, m4a, wav)
+            playlist: Download every video of a playlist URL instead of one video
         """
         self.download_dir = download_dir
         self.quality = quality
         self.format = format
+        self.playlist = playlist
+        self.last_entries: List[HistoryEntry] = []
         self.logger = get_logger()
         self.lang_manager = get_language_manager()
 
@@ -154,6 +167,14 @@ class VideoDownloader:
                 return format_map[choice]
             print(_('format_invalid'))
 
+    def select_playlist(self) -> bool:
+        """Ask whether playlist URLs must be downloaded entirely.
+
+        Returns:
+            True to download every video of a playlist, False for a single video
+        """
+        return is_yes(input(_('playlist_question') + _('yes_no_hint')))
+
     def validate_url(self, url: str) -> bool:
         """Validate a URL.
 
@@ -177,39 +198,41 @@ class VideoDownloader:
         return any(domain in url.lower() for domain in supported_domains)
 
     def download_video(self, url: str) -> bool:
-        """Download a video from the given URL.
+        """Download a video (or a playlist) from the given URL.
+
+        The result of every video is recorded in the download history and
+        kept in ``last_entries``.
 
         Args:
-            url: URL of the video to download
+            url: URL of the video or playlist to download
 
         Returns:
-            True if download was successful, False otherwise
+            True if at least one video was downloaded, False otherwise
         """
-        try:
-            self.logger.info(_('downloading').format(url=url))
+        self.logger.info(_('downloading').format(url=url))
 
-            # Configure yt-dlp options
-            ydl_opts = {
-                'format': self.QUALITY_OPTIONS.get(self.quality, 'best'),
-                'outtmpl': os.path.join(self.download_dir, '%(title)s.%(ext)s'),
-                'quiet': False,
-                'no_warnings': False,
-                'progress_hooks': [self._progress_hook],
-            }
+        # Configure yt-dlp options
+        ydl_opts = build_ydl_options(
+            self.download_dir,
+            self.quality,
+            self.format,
+            self.playlist,
+            self._progress_hook,
+        )
+        self.last_entries = download_url(
+            yt_dlp.YoutubeDL, url, ydl_opts, self.quality, self.format
+        )
 
-            # Add format conversion if specified
-            if self.format != 'auto':
-                ydl_opts['merge_output_format'] = self.FORMAT_OPTIONS.get(self.format)
+        for entry in self.last_entries:
+            if not entry.completed:
+                self.logger.error(
+                    _('download_failed').format(url=entry.url, error=entry.error)
+                )
 
-            with yt_dlp.YoutubeDL(ydl_opts) as ydl:
-                ydl.download([url])
-
+        if any(entry.completed for entry in self.last_entries):
             self.logger.info(_('download_complete').format(url=url))
             return True
-
-        except Exception as e:
-            self.logger.error(_('download_failed').format(url=url, error=str(e)))
-            return False
+        return False
 
     def _progress_hook(self, d: dict) -> None:
         """Progress hook for download progress.
@@ -250,16 +273,16 @@ class VideoDownloader:
                 failed += 1
                 continue
 
-            if self.download_video(url):
-                successful += 1
-            else:
-                failed += 1
+            self.download_video(url)
+            completed = sum(entry.completed for entry in self.last_entries)
+            successful += completed
+            failed += len(self.last_entries) - completed
 
         print(f"\n\n{'='*50}")
         print(f"Download Summary:")
         print(f"  Successful: {successful}")
         print(f"  Failed: {failed}")
-        print(f"  Total: {len(urls)}")
+        print(f"  Total: {successful + failed}")
         print(f"{'='*50}\n")
 
 

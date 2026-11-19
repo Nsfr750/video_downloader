@@ -183,3 +183,4 @@ assets/version_info.txt
 build.conf
 build_exe.sh
 monero_qrcode.png
+data/

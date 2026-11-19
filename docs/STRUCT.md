@@ -9,6 +9,8 @@ Video Downloader is a Python application for downloading videos from the interne
 video_downloader/
 ├── main.py                 # Main application entry point
 ├── version.py              # Version information (Semantic Versioning 2.0.0)
+├── download_core.py        # yt-dlp options, playlist handling, history recording
+├── history.py              # Download history (data/download_history.json)
 ├── logger.py               # Logging system
 ├── view_log.py             # Log viewing functionality
 ├── menu.py                 # User interface menu
@@ -16,6 +18,8 @@ video_downloader/
 ├── about.py                # About information
 ├── sponsor.py              # Sponsor information
 ├── update.py               # Update system
+├── ui/                     # PySide6 GUI
+│   └── main_window.py     # Main window
 ├── lang/                   # Language system
 │   ├── language_manager.py # Language management
 │   └── translations.py    # Translation strings
@@ -33,6 +37,8 @@ video_downloader/
 
 ### Core Modules
 - **main.py**: Main application entry point that handles URL input and video download
+- **download_core.py**: yt-dlp logic shared by CLI and GUI (quality/format options, playlists, history recording)
+- **history.py**: Persistent download history
 - **logger.py**: Logging system for application events and errors
 - **view_log.py**: Interface for viewing application logs
 

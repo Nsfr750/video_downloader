@@ -2,7 +2,7 @@
 
 import os
 import sys
-from unittest.mock import Mock, patch
+from unittest.mock import patch
 
 import pytest
 
@@ -49,6 +49,12 @@ def english():
     manager.set_language("en")
     yield manager
     manager.set_language(previous)
+
+
+def _fake_download(mock_ydl) -> None:
+    """Make the mocked YoutubeDL report a successfully downloaded video."""
+    ydl = mock_ydl.return_value.__enter__.return_value
+    ydl.extract_info.return_value = {"title": "Test video"}
 
 
 def _ydl_options(mock_ydl) -> dict:
@@ -101,19 +107,18 @@ class TestQualitySelection:
     @patch("main.yt_dlp.YoutubeDL")
     def test_download_uses_selected_quality(self, mock_ydl, downloader, quality):
         """Test that the selected quality is passed to yt-dlp."""
-        mock_ydl.return_value.__enter__.return_value = Mock()
+        _fake_download(mock_ydl)
         downloader.quality = quality
 
         assert downloader.download_video("https://youtube.com/test") is True
         assert (
-            _ydl_options(mock_ydl)["format"]
-            == VideoDownloader.QUALITY_OPTIONS[quality]
+            _ydl_options(mock_ydl)["format"] == VideoDownloader.QUALITY_OPTIONS[quality]
         )
 
     @patch("main.yt_dlp.YoutubeDL")
     def test_download_unknown_quality_falls_back_to_best(self, mock_ydl, downloader):
         """Test that an unknown quality falls back to 'best'."""
-        mock_ydl.return_value.__enter__.return_value = Mock()
+        _fake_download(mock_ydl)
         downloader.quality = "4320p"
 
         downloader.download_video("https://youtube.com/test")
@@ -158,7 +163,7 @@ class TestFormatSelection:
     @patch("main.yt_dlp.YoutubeDL")
     def test_download_auto_format_does_not_convert(self, mock_ydl, downloader):
         """Test that the 'auto' format does not request a conversion."""
-        mock_ydl.return_value.__enter__.return_value = Mock()
+        _fake_download(mock_ydl)
 
         downloader.download_video("https://youtube.com/test")
         assert "merge_output_format" not in _ydl_options(mock_ydl)
@@ -169,7 +174,7 @@ class TestFormatSelection:
     @patch("main.yt_dlp.YoutubeDL")
     def test_download_uses_selected_format(self, mock_ydl, downloader, output_format):
         """Test that the selected format is passed to yt-dlp."""
-        mock_ydl.return_value.__enter__.return_value = Mock()
+        _fake_download(mock_ydl)
         downloader.format = output_format
 
         assert downloader.download_video("https://youtube.com/test") is True
@@ -184,12 +189,15 @@ class TestDownloadMenu:
         """Test that the menu choices reach the yt-dlp options."""
         from menu import Menu
 
-        mock_ydl.return_value.__enter__.return_value = Mock()
-        answers = ["4", "2", "https://youtube.com/test", ""]
+        _fake_download(mock_ydl)
+        answers = ["4", "2", "", "https://youtube.com/test", ""]
 
-        with patch("builtins.input", side_effect=answers), patch(
-            "main.VideoDownloader.__init__.__defaults__",
-            (str(tmp_path / "downloads"), "best", "auto"),
+        with (
+            patch("builtins.input", side_effect=answers),
+            patch(
+                "main.VideoDownloader.__init__.__defaults__",
+                (str(tmp_path / "downloads"), "best", "auto", False),
+            ),
         ):
             Menu().download_menu()
 

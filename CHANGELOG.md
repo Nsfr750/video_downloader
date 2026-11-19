@@ -17,6 +17,11 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - Format selection dropdown in GUI
 - Quality selection menu in CLI
 - Format selection menu in CLI
+- Playlist support: optional download of entire playlists, saved in a folder named after the playlist with numbered files
+- Download history: every downloaded or failed video is recorded in `data/download_history.json`
+- "Download History" menu in CLI and "Download History" tab in GUI, with clear function
+- Shared download core (`download_core.py`) used by both CLI and GUI
+- Tests for quality/format selection, update check, sponsor QR code, playlists and download history
 
 ### Changed
 - Improved update check logic to properly handle version comparison
@@ -24,6 +29,9 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - Better error handling for GitHub API 404 errors
 - Updated copyright from Nsfr750 to Tuxxle
 - Fixed GUI translations for all hardcoded text
+- A playlist URL downloads a single video unless the playlist option is enabled
+- Download summary counts videos instead of URLs
+- CLI main menu: "Download History" is option 7, "Exit" is now option 8
 
 ### Fixed
 - Update system now correctly shows "latest version" message when no update is available

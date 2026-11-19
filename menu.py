@@ -28,7 +28,8 @@ class Menu:
             print(f"4. {_('menu_help')}")
             print(f"5. {_('menu_about')}")
             print(f"6. {_('menu_update')}")
-            print(f"7. {_('menu_exit')}")
+            print(f"7. {_('menu_history')}")
+            print(f"8. {_('menu_exit')}")
             print(f"{'='*50}")
 
             choice = input(_("enter_your_choice")).strip()
@@ -46,6 +47,8 @@ class Menu:
             elif choice == "6":
                 self.check_updates()
             elif choice == "7":
+                self.history_menu()
+            elif choice == "8":
                 print(f"\n{_('app_name')} - {_('close')}")
                 break
             else:
@@ -64,8 +67,52 @@ class Menu:
         downloader.quality = quality
         format = downloader.select_format()
         downloader.format = format
+        downloader.playlist = downloader.select_playlist()
         urls = downloader.get_urls_from_user()
         downloader.download_videos(urls)
+
+    def history_menu(self, limit: int = 20) -> None:
+        """Display the most recent downloads and allow clearing the history.
+
+        Args:
+            limit: Maximum number of downloads to show
+        """
+        from history import get_history
+        from main import is_yes
+
+        history = get_history()
+        entries = history.get_entries(limit=limit)
+
+        print(f"\n{'='*50}")
+        print(f"{_('menu_history')}")
+        print(f"{'='*50}")
+
+        if not entries:
+            print(_('history_empty'))
+            print(f"{'='*50}\n")
+            input(_("press_enter_continue"))
+            return
+
+        for i, entry in enumerate(entries, 1):
+            status = _('history_status_completed') if entry.completed else _('history_status_failed')
+            date = entry.timestamp.replace('T', ' ')
+            print(f"{i}. [{date}] {status} - {entry.title or entry.url} ({entry.quality}, {entry.format})")
+            if entry.title:
+                print(f"   {entry.url}")
+            if entry.file_path:
+                print(f"   {entry.file_path}")
+            if entry.error:
+                print(f"   {_('error')}: {entry.error}")
+
+        print(f"{'='*50}")
+        print(f"1. {_('history_clear')}")
+        print(f"2. {_('back')}")
+        print(f"{'='*50}")
+
+        choice = input(_("enter_your_choice")).strip()
+        if choice == "1" and is_yes(input(_('history_clear_confirm') + _('yes_no_hint'))):
+            history.clear()
+            print(f"\n{_('history_cleared')}")
 
     def view_logs_menu(self) -> None:
         """Display the logs viewing menu."""

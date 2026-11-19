@@ -10,38 +10,33 @@ from PySide6.QtWidgets import (
     QApplication, QMainWindow, QWidget, QVBoxLayout, QHBoxLayout,
     QPushButton, QLineEdit, QTextEdit, QLabel, QProgressBar,
     QListWidget, QFileDialog, QComboBox, QTabWidget, QMessageBox,
-    QGroupBox, QSplitter, QDialog
+    QGroupBox, QSplitter, QDialog, QCheckBox, QTableWidget, QTableWidgetItem,
+    QAbstractItemView
 )
 from PySide6.QtCore import Qt, QThread, Signal
 from PySide6.QtGui import QTextCursor, QPixmap, QPalette, QColor
+from download_core import (
+    FORMAT_OPTIONS,
+    QUALITY_OPTIONS,
+    build_ydl_options,
+    download_url,
+)
+from history import get_history
 from logger import get_logger
 from lang import get_language_manager, _
 from version import __version__
 
 COPYRIGHT = "© Copyright 2024-2026 Tuxxle - All rights reserved."
 
-# Quality options mapping
-QUALITY_OPTIONS = {
-    'best': 'best',
-    'worst': 'worst',
-    '1080p': 'bestvideo[height<=1080]+bestaudio/best[height<=1080]',
-    '720p': 'bestvideo[height<=720]+bestaudio/best[height<=720]',
-    '480p': 'bestvideo[height<=480]+bestaudio/best[height<=480]',
-    '360p': 'bestvideo[height<=360]+bestaudio/best[height<=360]',
-    'audio': 'bestaudio/best',
-}
-
-# Format options mapping
-FORMAT_OPTIONS = {
-    'auto': None,
-    'mp4': 'mp4',
-    'webm': 'webm',
-    'mkv': 'mkv',
-    'avi': 'avi',
-    'mp3': 'mp3',
-    'm4a': 'm4a',
-    'wav': 'wav',
-}
+# Translation keys of the history table columns
+HISTORY_COLUMNS = [
+    'history_col_date',
+    'history_col_title',
+    'history_col_status',
+    'history_col_quality',
+    'history_col_format',
+    'history_col_url',
+]
 
 
 class DownloadThread(QThread):
@@ -51,7 +46,14 @@ class DownloadThread(QThread):
     download_complete = Signal(str, bool)   # url, success
     download_finished = Signal(int, int)    # successful, failed
 
-    def __init__(self, urls: List[str], download_dir: str, quality: str = "best", format: str = "auto"):
+    def __init__(
+        self,
+        urls: List[str],
+        download_dir: str,
+        quality: str = "best",
+        format: str = "auto",
+        playlist: bool = False,
+    ):
         """Initialize download thread.
 
         Args:
@@ -59,48 +61,50 @@ class DownloadThread(QThread):
             download_dir: Directory to save videos
             quality: Video quality (best, worst, 1080p, 720p, 480p, 360p, audio)
             format: Output format (auto, mp4, webm, mkv, avi, mp3, m4a, wav)
+            playlist: Download every video of a playlist URL instead of one video
         """
         super().__init__()
         self.urls = urls
         self.download_dir = download_dir
         self.quality = quality
         self.format = format
+        self.playlist = playlist
         self.logger = get_logger()
         import yt_dlp
         self.yt_dlp = yt_dlp
 
     def run(self) -> None:
-        """Run the download process."""
+        """Run the download process, recording every video in the history."""
         successful = 0
         failed = 0
 
         for url in self.urls:
-            try:
-                self.logger.info(_('downloading').format(url=url))
+            self.logger.info(_('downloading').format(url=url))
 
-                ydl_opts = {
-                    'format': QUALITY_OPTIONS.get(self.quality, 'best'),
-                    'outtmpl': os.path.join(self.download_dir, '%(title)s.%(ext)s'),
-                    'quiet': True,
-                    'no_warnings': True,
-                    'progress_hooks': [self._progress_hook],
-                }
+            ydl_opts = build_ydl_options(
+                self.download_dir,
+                self.quality,
+                self.format,
+                self.playlist,
+                self._progress_hook,
+                quiet=True,
+            )
+            entries = download_url(
+                self.yt_dlp.YoutubeDL, url, ydl_opts, self.quality, self.format
+            )
 
-                # Add format conversion if specified
-                if self.format != 'auto':
-                    ydl_opts['merge_output_format'] = FORMAT_OPTIONS.get(self.format)
+            for entry in entries:
+                if not entry.completed:
+                    self.logger.error(
+                        _('download_failed').format(url=entry.url, error=entry.error)
+                    )
 
-                with self.yt_dlp.YoutubeDL(ydl_opts) as ydl:
-                    ydl.download([url])
-
+            completed = sum(entry.completed for entry in entries)
+            if completed:
                 self.logger.info(_('download_complete').format(url=url))
-                self.download_complete.emit(url, True)
-                successful += 1
-
-            except Exception as e:
-                self.logger.error(_('download_failed').format(url=url, error=str(e)))
-                self.download_complete.emit(url, False)
-                failed += 1
+            self.download_complete.emit(url, completed > 0)
+            successful += completed
+            failed += len(entries) - completed
 
         self.download_finished.emit(successful, failed)
 
@@ -130,6 +134,7 @@ class MainWindow(QMainWindow):
         self.download_dir = "downloads"
         self.quality = "best"
         self.format = "auto"
+        self.playlist = False
         self.urls: List[str] = []
         self.download_thread: Optional[DownloadThread] = None
         self.quality_group = None
@@ -184,6 +189,9 @@ class MainWindow(QMainWindow):
 
         # Create logs tab
         self._create_logs_tab()
+
+        # Create history tab
+        self._create_history_tab()
 
         # Create settings tab
         self._create_settings_tab()
@@ -273,6 +281,11 @@ class MainWindow(QMainWindow):
         layout.addWidget(format_group)
         self.format_group = format_group
 
+        # Playlist option
+        self.playlist_checkbox = QCheckBox(_('ui_playlist'))
+        self.playlist_checkbox.toggled.connect(self._on_playlist_toggled)
+        layout.addWidget(self.playlist_checkbox)
+
         # Download directory section
         dir_group = QGroupBox(_('ui_download_dir'))
         dir_layout = QHBoxLayout()
@@ -351,6 +364,45 @@ class MainWindow(QMainWindow):
         layout.addLayout(close_layout)
 
         self.tab_widget.addTab(logs_tab, _('menu_view_logs'))
+
+    def _create_history_tab(self) -> None:
+        """Create the download history tab."""
+        history_tab = QWidget()
+        layout = QVBoxLayout(history_tab)
+
+        # History table
+        self.history_table = QTableWidget(0, len(HISTORY_COLUMNS))
+        self.history_table.setHorizontalHeaderLabels([_(key) for key in HISTORY_COLUMNS])
+        self.history_table.setEditTriggers(QAbstractItemView.NoEditTriggers)
+        self.history_table.setSelectionBehavior(QAbstractItemView.SelectRows)
+        self.history_table.verticalHeader().setVisible(False)
+        self.history_table.horizontalHeader().setStretchLastSection(True)
+        layout.addWidget(self.history_table)
+
+        # History buttons
+        history_button_layout = QHBoxLayout()
+
+        self.refresh_history_button = QPushButton(_('ui_refresh_logs'))
+        self.refresh_history_button.clicked.connect(self._refresh_history)
+        history_button_layout.addWidget(self.refresh_history_button)
+
+        self.clear_history_button = QPushButton(_('history_clear'))
+        self.clear_history_button.clicked.connect(self._clear_history)
+        history_button_layout.addWidget(self.clear_history_button)
+
+        layout.addLayout(history_button_layout)
+
+        # Close button at bottom right
+        close_layout = QHBoxLayout()
+        close_layout.addStretch()
+        self.close_button_history = QPushButton(_('close'))
+        self.close_button_history.setStyleSheet("background-color: #dc3545; color: white;")
+        self.close_button_history.clicked.connect(self.close)
+        close_layout.addWidget(self.close_button_history)
+        layout.addLayout(close_layout)
+
+        self.tab_widget.addTab(history_tab, _('menu_history'))
+        self._refresh_history()
 
     def _create_settings_tab(self) -> None:
         """Create the settings tab."""
@@ -451,6 +503,57 @@ class MainWindow(QMainWindow):
         """
         self.format = self.format_combo.itemData(index)
 
+    def _on_playlist_toggled(self, checked: bool) -> None:
+        """Handle playlist option change.
+
+        Args:
+            checked: Whether entire playlists must be downloaded
+        """
+        self.playlist = checked
+
+    def _refresh_history(self) -> None:
+        """Reload the download history table, newest download first."""
+        try:
+            entries = get_history().get_entries()
+        except OSError as e:
+            self.logger.error(f"{_('error')}: {e}")
+            entries = []
+
+        self.history_table.setRowCount(len(entries))
+        for row, entry in enumerate(entries):
+            status = _('history_status_completed') if entry.completed else _('history_status_failed')
+            values = [
+                entry.timestamp.replace('T', ' '),
+                entry.title or entry.playlist,
+                status,
+                entry.quality,
+                entry.format,
+                entry.url,
+            ]
+            tooltip = entry.error or entry.file_path
+            for column, value in enumerate(values):
+                item = QTableWidgetItem(value)
+                item.setToolTip(tooltip)
+                self.history_table.setItem(row, column, item)
+        self.history_table.resizeColumnsToContents()
+
+    def _clear_history(self) -> None:
+        """Clear the download history after confirmation."""
+        reply = QMessageBox.question(
+            self,
+            _('history_clear'),
+            _('history_clear_confirm'),
+            QMessageBox.StandardButton.Yes | QMessageBox.StandardButton.No
+        )
+        if reply != QMessageBox.StandardButton.Yes:
+            return
+
+        try:
+            get_history().clear()
+        except OSError as e:
+            QMessageBox.critical(self, _('error'), str(e))
+        self._refresh_history()
+
     def _start_download(self) -> None:
         """Start the download process."""
         if not self.urls:
@@ -467,7 +570,9 @@ class MainWindow(QMainWindow):
 
         self.status_text.append(_('ui_download_started').format(count=len(self.urls)))
 
-        self.download_thread = DownloadThread(self.urls, self.download_dir, self.quality, self.format)
+        self.download_thread = DownloadThread(
+            self.urls, self.download_dir, self.quality, self.format, self.playlist
+        )
         self.download_thread.progress_updated.connect(self._update_progress)
         self.download_thread.download_complete.connect(self._download_complete)
         self.download_thread.download_finished.connect(self._download_finished)
@@ -502,6 +607,7 @@ class MainWindow(QMainWindow):
         """
         self.download_button.setEnabled(True)
         self.progress_bar.setValue(100)
+        self._refresh_history()
 
         summary = f"\n{'='*50}\n"
         summary += f"{_('ui_download_summary')}\n"
@@ -560,7 +666,8 @@ class MainWindow(QMainWindow):
         self.setWindowTitle(_('app_title'))
         self.tab_widget.setTabText(0, _('menu_download'))
         self.tab_widget.setTabText(1, _('menu_view_logs'))
-        self.tab_widget.setTabText(2, _('menu_settings'))
+        self.tab_widget.setTabText(2, _('menu_history'))
+        self.tab_widget.setTabText(3, _('menu_settings'))
 
         self.url_input.setPlaceholderText(_('ui_url_placeholder'))
         self.add_url_button.setText(_('ui_add_url'))
@@ -577,6 +684,14 @@ class MainWindow(QMainWindow):
         self.close_button.setText(_('close'))
         self.close_button_logs.setText(_('close'))
         self.close_button_settings.setText(_('close'))
+
+        # Update playlist option and history tab
+        self.playlist_checkbox.setText(_('ui_playlist'))
+        self.refresh_history_button.setText(_('ui_refresh_logs'))
+        self.clear_history_button.setText(_('history_clear'))
+        self.close_button_history.setText(_('close'))
+        self.history_table.setHorizontalHeaderLabels([_(key) for key in HISTORY_COLUMNS])
+        self._refresh_history()
 
         # Update quality and format group titles and labels
         if self.quality_group:

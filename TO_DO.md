@@ -28,6 +28,6 @@
 - [x] Add QR code for Monero donations
 - [x] Update copyright to Tuxxle
 - [x] Fix GUI translations for all hardcoded text
-- [ ] Add playlist support
-- [ ] Add download history
+- [x] Add playlist support
+- [x] Add download history
 - [ ] Add authentication for premium sites

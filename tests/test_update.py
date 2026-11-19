@@ -158,8 +158,9 @@ class TestUpdateMenu:
         """
         from menu import Menu
 
-        with patch("update.UpdateManager.check_for_updates", return_value=latest), patch(
-            "builtins.input", return_value=""
+        with (
+            patch("update.UpdateManager.check_for_updates", return_value=latest),
+            patch("builtins.input", return_value=""),
         ):
             Menu().check_updates()
         return capsys.readouterr().out

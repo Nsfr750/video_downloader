@@ -55,17 +55,18 @@ class TestVideoDownloader:
     def test_download_video_success(self, mock_ydl, downloader):
         """Test successful video download."""
         mock_ydl_instance = Mock()
+        mock_ydl_instance.extract_info.return_value = {'title': 'Test video'}
         mock_ydl.return_value.__enter__.return_value = mock_ydl_instance
 
         result = downloader.download_video("https://youtube.com/test")
         assert result is True
-        mock_ydl_instance.download.assert_called_once()
+        mock_ydl_instance.extract_info.assert_called_once()
 
     @patch('main.yt_dlp.YoutubeDL')
     def test_download_video_failure(self, mock_ydl, downloader):
         """Test failed video download."""
         mock_ydl_instance = Mock()
-        mock_ydl_instance.download.side_effect = Exception("Download failed")
+        mock_ydl_instance.extract_info.side_effect = Exception("Download failed")
         mock_ydl.return_value.__enter__.return_value = mock_ydl_instance
 
         result = downloader.download_video("https://youtube.com/test")
