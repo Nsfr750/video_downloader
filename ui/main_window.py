@@ -13,7 +13,7 @@ from PySide6.QtWidgets import (
     QGroupBox, QSplitter, QDialog
 )
 from PySide6.QtCore import Qt, QThread, Signal
-from PySide6.QtGui import QTextCursor, QPixmap
+from PySide6.QtGui import QTextCursor, QPixmap, QPalette, QColor
 from logger import get_logger
 from lang import get_language_manager, _
 from version import __version__
@@ -138,7 +138,32 @@ class MainWindow(QMainWindow):
         self.format_label = None
 
         self._init_ui()
+        self._apply_dark_theme()
         self._update_language()
+
+    def _apply_dark_theme(self) -> None:
+        """Apply dark theme to the application."""
+        app = QApplication.instance()
+        palette = QPalette()
+
+        # Set dark theme colors
+        palette.setColor(QPalette.Window, QColor(53, 53, 53))
+        palette.setColor(QPalette.WindowText, Qt.white)
+        palette.setColor(QPalette.Base, QColor(25, 25, 25))
+        palette.setColor(QPalette.AlternateBase, QColor(53, 53, 53))
+        palette.setColor(QPalette.ToolTipBase, Qt.white)
+        palette.setColor(QPalette.ToolTipText, Qt.white)
+        palette.setColor(QPalette.Text, Qt.white)
+        palette.setColor(QPalette.Button, QColor(53, 53, 53))
+        palette.setColor(QPalette.ButtonText, Qt.white)
+        palette.setColor(QPalette.BrightText, Qt.red)
+        palette.setColor(QPalette.Link, QColor(42, 130, 218))
+        palette.setColor(QPalette.Highlight, QColor(42, 130, 218))
+        palette.setColor(QPalette.HighlightedText, Qt.black)
+        palette.setColor(QPalette.GroupButtonBackground, QColor(53, 53, 53))
+        palette.setColor(QPalette.GroupButton, QColor(53, 53, 53))
+
+        app.setPalette(palette)
 
     def _init_ui(self) -> None:
         """Initialize the user interface."""
