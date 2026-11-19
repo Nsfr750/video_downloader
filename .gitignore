@@ -179,9 +179,7 @@ cython_debug/
 #  refer to https://docs.cursor.com/context/ignore-files
 .cursorignore
 .cursorindexingignore
-COMPILA
 assets/version_info.txt
 build.conf
 build_exe.sh
-firma.bat
 monero_qrcode.png
